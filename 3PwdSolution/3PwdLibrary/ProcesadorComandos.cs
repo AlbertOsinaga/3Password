@@ -164,11 +164,9 @@ namespace _3PwdLibrary
             switch (regComando.Cmd)
             {
                 case "add":
-                case "get":
-                case "upd":
                     if (!MR.HayError)
                     {
-                        respuesta = MR.CreateRegPwd(regComando.Arg, enMaestro: false);
+                        respuesta = MR.CreateRegPwd(regComando.Arg);
                     }
                     else
                     {
@@ -180,6 +178,26 @@ namespace _3PwdLibrary
                     {
                         bool deleteOk = MR.DeleteRegPwd(regComando.Arg);
                         respuesta = deleteOk ? "*** registro borrado! ***" : "*** no borrado! ***";
+                    }
+                    else
+                    {
+                        respuesta = $"*** {MR.MensajeError} ***";
+                    }
+                    break;
+                case "get":
+                    if (!MR.HayError)
+                    {
+                        respuesta = MR.RetrieveRegPwd(regComando.Arg);
+                    }
+                    else
+                    {
+                        respuesta = $"*** {MR.MensajeError} ***";
+                    }
+                    break;
+                case "upd":
+                    if (!MR.HayError)
+                    {
+                        respuesta = MR.UpdateRegPwd(regComando.Arg);
                     }
                     else
                     {

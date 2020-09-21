@@ -194,6 +194,48 @@ namespace _3PwdLibrary
             ((regPwd.Numero ?? "").Trim().ToLower() + G.SeparadorCSV) +
             (regPwd.LastRegId ?? "").Trim().ToLower() 
             : G.RegNull;
+        public static IEnumerable<RegistroPwd> ListRegsPwd(string where = "", bool enMaestro = true)
+        {
+            var maestroReadedOk = true;
+            MR.InitMetodo();
+            if (enMaestro)
+                maestroReadedOk = ReadMaestro();
+
+            if (!maestroReadedOk)
+                return null;
+
+            var regs = MR.TableMaestro.Values.ToList();
+            return regs;
+        }
+        public static IEnumerable<string> ListRowsPwd(string where = "", bool enMaestro = true)
+        {
+            var rows = new List<string>();
+            var regs = MR.ListRegsPwd(where, enMaestro);
+
+            foreach (var reg in regs)
+                rows.Add(MR.RegistroPwdToRow(reg));
+
+            return rows;
+        }
+        public static string ListRowsPwdAsString(List<string> rowsPwd)
+        {
+            var rows = "";
+            for (int i = 0; i < rowsPwd.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(rowsPwd[i]))
+                {
+                    rows += rowsPwd[i];
+                    if (i < rowsPwd.Count - 1)
+                        rows += Environment.NewLine;
+                }
+            }
+            return rows;
+        }
+        public static string ListRowsPwdAsString(string where = "", bool enMaestro = true)
+        {
+            var rowsPwd = MR.ListRowsPwd(where, enMaestro);
+            return (ListRowsPwdAsString(rowsPwd as List<string>));
+        }
         public static IEnumerable<string> ReadFile()
         {
             var allLines = new List<string>();
