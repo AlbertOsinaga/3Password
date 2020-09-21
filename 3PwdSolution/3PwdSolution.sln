@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30509.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3PwdLibrary", "3PwdLibrary\3PwdLibrary.csproj", "{B14FBD26-ABCE-405E-AFD2-BD5BDCDC2399}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3PwdLibrary", "3PwdLibrary\3PwdLibrary.csproj", "{B14FBD26-ABCE-405E-AFD2-BD5BDCDC2399}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3PwdMSTests", "3PwdMSTests\3PwdMSTests.csproj", "{3C9AFBF7-0752-4716-9EEF-6E7EE2434EA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3PwdMSTests", "3PwdMSTests\3PwdMSTests.csproj", "{3C9AFBF7-0752-4716-9EEF-6E7EE2434EA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3PwdConsola", "3PwdConsola\3PwdConsola.csproj", "{2FD8BD5A-EC5A-4285-B9F3-B2FCFE4F0AAA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{3C9AFBF7-0752-4716-9EEF-6E7EE2434EA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C9AFBF7-0752-4716-9EEF-6E7EE2434EA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C9AFBF7-0752-4716-9EEF-6E7EE2434EA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FD8BD5A-EC5A-4285-B9F3-B2FCFE4F0AAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD8BD5A-EC5A-4285-B9F3-B2FCFE4F0AAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FD8BD5A-EC5A-4285-B9F3-B2FCFE4F0AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FD8BD5A-EC5A-4285-B9F3-B2FCFE4F0AAA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

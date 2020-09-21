@@ -305,11 +305,13 @@ namespace _3PwdLibrary
         {
             MR.InitMetodo();
             if (regPwd == null)
-            {
-                MR.HayError = true;
-                MR.MensajeError = $"Error: reg null, en {nameof(ManejadorRegistros)}.{nameof(RegistroPwdToRow)}!";
-                return null;
-            }
+                return "";
+
+            //{
+            //    MR.HayError = true;
+            //    MR.MensajeError = $"Error: reg null, en {nameof(ManejadorRegistros)}.{nameof(RegistroPwdToRow)}!";
+            //    return null;
+            //}
 
             string row = string.Empty;
             row += regPwd.UserNombre != null ? regPwd.UserNombre : string.Empty;
@@ -477,7 +479,10 @@ namespace _3PwdLibrary
                 return null;
             }
 
+            regPwd.CreateDate = MR.TableMaestro[key].CreateDate;
             regPwd.UpdateDate = DateTime.Now;
+            regPwd.RegId = MR.TableMaestro[key].RegId;
+            regPwd.LastRegId = MR.TableMaestro[key].LastRegId;
             MR.TableMaestro[key] = regPwd;
             MR.Updated = true;
 

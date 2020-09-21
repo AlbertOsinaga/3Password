@@ -172,6 +172,8 @@ namespace _3PwdLibrary
                     if (!MR.HayError)
                     {
                         respuesta = MR.CreateRegPwd(regComando.Arg);
+                        if (string.IsNullOrEmpty(respuesta))
+                            respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro duplicado ***" : $"*** {MR.MensajeError} ***";
                     }
                     else
                     {
@@ -182,7 +184,8 @@ namespace _3PwdLibrary
                     if (!MR.HayError)
                     {
                         bool deleteOk = MR.DeleteRegPwd(regComando.Arg);
-                        respuesta = deleteOk ? "*** registro borrado! ***" : "*** no borrado! ***";
+                        respuesta = deleteOk ? "*** registro borrado! ***" 
+                                             : ( MR.HayError ? $"*** {MR.MensajeError} ***" : "*** registro no encontrado! ***" );
                     }
                     else
                     {
@@ -193,6 +196,8 @@ namespace _3PwdLibrary
                     if (!MR.HayError)
                     {
                         respuesta = MR.RetrieveRegPwd(regComando.Arg);
+                        if (string.IsNullOrEmpty(respuesta))
+                            respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro no encontrado ***" : $"*** {MR.MensajeError} ***";
                     }
                     else
                     {
@@ -203,6 +208,8 @@ namespace _3PwdLibrary
                     if (!MR.HayError)
                     {
                         respuesta = MR.ListRowsPwdAsString(regComando.Arg);
+                        if (string.IsNullOrEmpty(respuesta))
+                            respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** no hay registros ***" : $"*** {MR.MensajeError} ***";
                     }
                     else
                     {
@@ -213,6 +220,8 @@ namespace _3PwdLibrary
                     if (!MR.HayError)
                     {
                         respuesta = MR.UpdateRegPwd(regComando.Arg);
+                        if (string.IsNullOrEmpty(respuesta))
+                            respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro no encontrado ***" : $"*** {MR.MensajeError} ***";
                     }
                     else
                     {
