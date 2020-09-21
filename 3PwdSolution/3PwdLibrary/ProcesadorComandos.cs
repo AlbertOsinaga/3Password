@@ -53,10 +53,12 @@ namespace _3PwdLibrary
             }
 
             int i = lineaCmd.IndexOf(PC.SeparadorCmdArg);  // ' '
+            if (i < 0)
+                i = lineaCmd.Length;
             if (i > 0)
             {
                 regComando.Cmd = lineaCmd.Substring(0, i).Trim().ToLower();
-                if (i + 1 >= 4)
+                if (i == 3 && lineaCmd.Length > 4)
                     regComando.Arg = lineaCmd.Substring(i + 1);
             }
             if (regComando.Cmd.Length != 3)
@@ -117,9 +119,12 @@ namespace _3PwdLibrary
                         break;
                     case "del":
                     case "get":
-                    case "lst":
                         cmds = new[] { "nom", "cat", "emp", "cta", "nro" };
                         break;
+                    case "lst":
+                        regCmd.Arg = "";
+                        regCmd.Ok = true;
+                        return regCmd;
                     case "upd":
                         cmds = new[] { "nom", "cat", "emp", "cta", "nro", "web", "uid", "pwd", "ema", "not", "fcr", "fup", "rid" };
                         break;
@@ -188,6 +193,16 @@ namespace _3PwdLibrary
                     if (!MR.HayError)
                     {
                         respuesta = MR.RetrieveRegPwd(regComando.Arg);
+                    }
+                    else
+                    {
+                        respuesta = $"*** {MR.MensajeError} ***";
+                    }
+                    break;
+                case "lst":
+                    if (!MR.HayError)
+                    {
+                        respuesta = MR.ListRowsPwdAsString(regComando.Arg);
                     }
                     else
                     {

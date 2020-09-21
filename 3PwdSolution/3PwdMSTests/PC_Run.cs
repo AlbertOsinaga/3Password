@@ -83,6 +83,37 @@ namespace _3PwdMSTests
         }
 
         [TestMethod]
+        public void Lst_ok()
+        {
+            // Prepara
+            MR.NameMaestro = MR.NameMaestro_Default;
+            MR.EmptyMaestro();
+            var lineaComando = "add -nom Luis Alberto -cat Programas -cta Gmail LAOS -uid luis@gmail.com -pwd claveSecreta$";
+            var respuesta = PC.Run(lineaComando);
+            lineaComando = "add -nom Luis -cat Programas -cta Gmail LAOS -uid luis@gmail.com -pwd claveSecreta$";
+            respuesta = PC.Run(lineaComando);
+            lineaComando = "add -nom Alberto -cat Programas -cta Gmail LAOS -uid luis@gmail.com -pwd claveSecreta$";
+            respuesta = PC.Run(lineaComando);
+            lineaComando = "add -nom Luigi -cat Programas -cta Gmail LAOS -uid luis@gmail.com -pwd claveSecreta$";
+            respuesta = PC.Run(lineaComando);
+            var respuestaEsperada1 = "Luis Alberto|Programas||Gmail LAOS|||luis@gmail.com|claveSecreta$";
+            var respuestaEsperada2 = "Luis|Programas||Gmail LAOS|||luis@gmail.com|claveSecreta$";
+            var respuestaEsperada3 = "Alberto|Programas||Gmail LAOS|||luis@gmail.com|claveSecreta$";
+            var respuestaEsperada4 = "Luigi|Programas||Gmail LAOS|||luis@gmail.com|claveSecreta$";
+
+            // Ejecuta
+            lineaComando = "lst";
+            respuesta = PC.Run(lineaComando);
+
+            // Prueba
+            Assert.IsNotNull(respuesta);
+            Assert.IsTrue(respuesta.Contains(respuestaEsperada1));
+            Assert.IsTrue(respuesta.Contains(respuestaEsperada2));
+            Assert.IsTrue(respuesta.Contains(respuestaEsperada3));
+            Assert.IsTrue(respuesta.Contains(respuestaEsperada4));
+        }
+
+        [TestMethod]
         public void Upd_ok()
         {
             // Prepara

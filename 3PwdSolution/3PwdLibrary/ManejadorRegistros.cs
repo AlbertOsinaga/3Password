@@ -233,6 +233,7 @@ namespace _3PwdLibrary
         }
         public static string ListRowsPwdAsString(string where = "", bool enMaestro = true)
         {
+            MR.InitMetodo();
             var rowsPwd = MR.ListRowsPwd(where, enMaestro);
             return (ListRowsPwdAsString(rowsPwd as List<string>));
         }
