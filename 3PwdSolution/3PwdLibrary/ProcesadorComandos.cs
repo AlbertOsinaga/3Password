@@ -42,6 +42,8 @@ namespace _3PwdLibrary
             // arg identificando la row sobre la que se debe operar
             // y manejando el flag Ok para indicar si el parse (conversion) fue exitoso
 
+            #region Body
+
             PC.InitMetodo();
             var regComando = new Comando();
 
@@ -71,12 +73,15 @@ namespace _3PwdLibrary
 
             switch (regComando.Cmd)
             {
+                case "all":
                 case "add":
                 case "del":
                 case "get":
                 case "lst":
                 case "upd":
-                    return Parse(regComando);
+                case "viu":
+                    ParseRegComando();
+                    return regComando;
                 default:
                     PC.HayError = true;
                     PC.MensajeError = $"Error: comando '{regComando.Cmd}' no reconcido, " +
@@ -84,27 +89,12 @@ namespace _3PwdLibrary
                     return regComando; ;
             }
 
+            #endregion
+
             #region Funciones
 
-            Comando Parse(Comando regCmd)
-            {
-                switch (regComando.Cmd)
-                {
-                    case "add":
-                    case "del":
-                    case "get":
-                    case "lst":
-                    case "upd":
-                        return ParseCmd(regCmd);
-                    default:
-                        PC.HayError = true;
-                        PC.MensajeError = $"Error: comando '{regCmd.Cmd}' no reconcido, " +
-                                            $"en {nameof(ProcesadorComandos)}.{nameof(Parse)}!";
-                        return regCmd;
-                }
-            }
-
-            Comando ParseCmd(Comando regCmd)
+            // Parse regComando
+            void ParseRegComando()
             {
                 //
                 // Este metodo arma el argumento del cmd add en una row normalizada de la forma
@@ -112,8 +102,12 @@ namespace _3PwdLibrary
                 //
 
                 var cmds = new string[] {};
-                switch(regCmd.Cmd)
+                switch(regComando.Cmd)
                 {
+                    case "all":
+                        regComando.Arg = "nom,cat,emp,cta,nro,web,uid,pwd,ema,not,fcr,fup,rid,lid";
+                        regComando.Ok = true;
+                        return;
                     case "add":
                         cmds = new[] { "nom", "cat", "emp", "cta", "nro", "web", "uid", "pwd", "ema", "not" };
                         break;
@@ -122,17 +116,22 @@ namespace _3PwdLibrary
                         cmds = new[] { "nom", "cat", "emp", "cta", "nro" };
                         break;
                     case "lst":
-                        regCmd.Arg = "";
-                        regCmd.Ok = true;
-                        return regCmd;
+                        if (string.IsNullOrEmpty(regComando.Arg))
+                            regComando.Arg = "cta,uid,pwd";
+                        regComando.Ok = true;
+                        return;
                     case "upd":
                         cmds = new[] { "nom", "cat", "emp", "cta", "nro", "web", "uid", "pwd", "ema", "not", "fcr", "fup", "rid" };
                         break;
+                    case "viu":
+                        regComando.Arg = "nom,cat,emp,cta,nro,web,uid,pwd,ema,not";
+                        regComando.Ok = true;
+                        return;
                     default:
                         break;
                 }
 
-                var partes = regCmd.Arg.Split('-');
+                var partes = regComando.Arg.Split('-');
                 var campos = new Dictionary<string, string>();
                 foreach (var campo in partes)
                 {
@@ -148,11 +147,10 @@ namespace _3PwdLibrary
                     arg += cmd == cmds[cmds.Length - 1] ? "" : "|";
                 }
 
-                regCmd.Arg = arg;
-                regCmd.Ok = true;
-                return regCmd;
+                regComando.Arg = arg;
+                regComando.Ok = true;
+                return;
             }
-
 
             #endregion
         }
@@ -169,64 +167,21 @@ namespace _3PwdLibrary
             switch (regComando.Cmd)
             {
                 case "add":
-                    if (!MR.HayError)
-                    {
-                        respuesta = MR.CreateRegPwd(regComando.Arg);
-                        if (string.IsNullOrEmpty(respuesta))
-                            respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro duplicado ***" : $"*** {MR.MensajeError} ***";
-                    }
-                    else
-                    {
-                        respuesta = $"*** {MR.MensajeError} ***";
-                    }
+                    ComandoAdd();
                     break;
                 case "del":
-                    if (!MR.HayError)
-                    {
-                        bool deleteOk = MR.DeleteRegPwd(regComando.Arg);
-                        respuesta = deleteOk ? "*** registro borrado! ***" 
-                                             : ( MR.HayError ? $"*** {MR.MensajeError} ***" : "*** registro no encontrado! ***" );
-                    }
-                    else
-                    {
-                        respuesta = $"*** {MR.MensajeError} ***";
-                    }
+                    ComandoDel();
                     break;
                 case "get":
-                    if (!MR.HayError)
-                    {
-                        respuesta = MR.RetrieveRegPwd(regComando.Arg);
-                        if (string.IsNullOrEmpty(respuesta))
-                            respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro no encontrado ***" : $"*** {MR.MensajeError} ***";
-                    }
-                    else
-                    {
-                        respuesta = $"*** {MR.MensajeError} ***";
-                    }
+                    ComandoGet();
                     break;
+                case "all":
                 case "lst":
-                    if (!MR.HayError)
-                    {
-                        respuesta = MR.ListRowsPwdAsString(regComando.Arg);
-                        if (string.IsNullOrEmpty(respuesta))
-                            respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** no hay registros ***" : $"*** {MR.MensajeError} ***";
-                    }
-                    else
-                    {
-                        respuesta = $"*** {MR.MensajeError} ***";
-                    }
+                case "viu":
+                    ComandoLst();
                     break;
                 case "upd":
-                    if (!MR.HayError)
-                    {
-                        respuesta = MR.UpdateRegPwd(regComando.Arg);
-                        if (string.IsNullOrEmpty(respuesta))
-                            respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro no encontrado ***" : $"*** {MR.MensajeError} ***";
-                    }
-                    else
-                    {
-                        respuesta = $"*** {MR.MensajeError} ***";
-                    }
+                    ComandoUpd();
                     break;
                 default:
                     respuesta = $"*** Comando '{regComando.Cmd}' no reconocido! ***";
@@ -234,6 +189,81 @@ namespace _3PwdLibrary
             }
 
             return respuesta;
+
+            #region Functions
+
+            void ComandoAdd()
+            {
+                if (!MR.HayError)
+                {
+                    respuesta = MR.CreateRegPwd(regComando.Arg);
+                    if (string.IsNullOrEmpty(respuesta))
+                        respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro duplicado ***" : $"*** {MR.MensajeError} ***";
+                }
+                else
+                {
+                    respuesta = $"*** {MR.MensajeError} ***";
+                }
+            }
+
+            void ComandoDel()
+            {
+                if (!MR.HayError)
+                {
+                    bool deleteOk = MR.DeleteRegPwd(regComando.Arg);
+                    respuesta = deleteOk ? "*** registro borrado! ***"
+                                         : (MR.HayError ? $"*** {MR.MensajeError} ***" : "*** registro no encontrado! ***");
+                }
+                else
+                {
+                    respuesta = $"*** {MR.MensajeError} ***";
+                }
+            }
+
+            void ComandoGet()
+            {
+                if (!MR.HayError)
+                {
+                    respuesta = MR.RetrieveRegPwd(regComando.Arg);
+                    if (string.IsNullOrEmpty(respuesta))
+                        respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro no encontrado ***" : $"*** {MR.MensajeError} ***";
+                }
+                else
+                {
+                    respuesta = $"*** {MR.MensajeError} ***";
+                }
+
+            }
+
+            void ComandoLst()
+            {
+                if (!MR.HayError)
+                {
+                    respuesta = MR.ListRowsPwdAsString(regComando.Arg);
+                    if (string.IsNullOrEmpty(respuesta))
+                        respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** no hay registros ***" : $"*** {MR.MensajeError} ***";
+                }
+                else
+                {
+                    respuesta = $"*** {MR.MensajeError} ***";
+                }
+            }
+
+            void ComandoUpd()
+            {
+                if (!MR.HayError)
+                {
+                    respuesta = MR.UpdateRegPwd(regComando.Arg);
+                    if (string.IsNullOrEmpty(respuesta))
+                        respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro no encontrado ***" : $"*** {MR.MensajeError} ***";
+                }
+                else
+                {
+                    respuesta = $"*** {MR.MensajeError} ***";
+                }
+            }
+
+            #endregion
         }
 
         #endregion

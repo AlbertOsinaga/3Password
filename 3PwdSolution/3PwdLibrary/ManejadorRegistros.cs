@@ -194,7 +194,7 @@ namespace _3PwdLibrary
             ((regPwd.Numero ?? "").Trim().ToLower() + G.SeparadorCSV) +
             (regPwd.LastRegId ?? "").Trim().ToLower() 
             : G.RegNull;
-        public static IEnumerable<RegistroPwd> ListRegsPwd(string where = "", bool enMaestro = true)
+        public static IEnumerable<RegistroPwd> ListRegsPwd(bool enMaestro = true)
         {
             var maestroReadedOk = true;
             MR.InitMetodo();
@@ -205,15 +205,16 @@ namespace _3PwdLibrary
                 return null;
 
             var regs = MR.TableMaestro.Values.ToList();
-            return regs;
+            var regsSorted = regs.OrderBy(r => r.Producto);
+            return regsSorted;
         }
-        public static IEnumerable<string> ListRowsPwd(string where = "", bool enMaestro = true)
+        public static IEnumerable<string> ListRowsPwd(string fields = "", bool enMaestro = true)
         {
             var rows = new List<string>();
-            var regs = MR.ListRegsPwd(where, enMaestro);
+            var regs = MR.ListRegsPwd(enMaestro);
 
             foreach (var reg in regs)
-                rows.Add(MR.RegistroPwdToRow(reg));
+                rows.Add(MR.RegistroPwdToRow(reg, fields));
 
             return rows;
         }
@@ -231,10 +232,10 @@ namespace _3PwdLibrary
             }
             return rows;
         }
-        public static string ListRowsPwdAsString(string where = "", bool enMaestro = true)
+        public static string ListRowsPwdAsString(string fields = "", bool enMaestro = true)
         {
             MR.InitMetodo();
-            var rowsPwd = MR.ListRowsPwd(where, enMaestro);
+            var rowsPwd = MR.ListRowsPwd(fields, enMaestro);
             return (ListRowsPwdAsString(rowsPwd as List<string>));
         }
         public static IEnumerable<string> ReadFile()
@@ -301,46 +302,84 @@ namespace _3PwdLibrary
 
             return true;
         }
-        public static string RegistroPwdToRow(RegistroPwd regPwd)
+        public static string RegistroPwdToRow(RegistroPwd regPwd, string fields = "")
         {
             MR.InitMetodo();
             if (regPwd == null)
                 return "";
 
-            //{
-            //    MR.HayError = true;
-            //    MR.MensajeError = $"Error: reg null, en {nameof(ManejadorRegistros)}.{nameof(RegistroPwdToRow)}!";
-            //    return null;
-            //}
-
             string row = string.Empty;
-            row += regPwd.UserNombre != null ? regPwd.UserNombre : string.Empty;
-            row += G.SeparadorCSV;
-            row += regPwd.Categoria != null ? regPwd.Categoria : string.Empty;
-            row += G.SeparadorCSV;
-            row += regPwd.Empresa != null ? regPwd.Empresa : string.Empty;
-            row += G.SeparadorCSV;
-            row += regPwd.Producto != null ? regPwd.Producto : string.Empty;
-            row += G.SeparadorCSV;
-            row += regPwd.Numero != null ? regPwd.Numero : string.Empty;
-            row += G.SeparadorCSV;
-            row += regPwd.Web != null ? regPwd.Web : string.Empty;
-            row += G.SeparadorCSV;
-            row += regPwd.UserId != null ? regPwd.UserId : string.Empty;
-            row += G.SeparadorCSV;
-            row += regPwd.UserPwd != null ? regPwd.UserPwd : string.Empty;
-            row += G.SeparadorCSV;
-            row += regPwd.UserEMail != null ? regPwd.UserEMail : string.Empty;
-            row += G.SeparadorCSV;
-            row += regPwd.UserNota != null ? regPwd.UserNota : string.Empty;
-            row += G.SeparadorCSV;
-            row += regPwd.CreateDate.ToString(G.FormatoFecha);
-            row += G.SeparadorCSV;
-            row += regPwd.UpdateDate.ToString(G.FormatoFecha);
-            row += G.SeparadorCSV;
-            row += regPwd.RegId;
-            row += G.SeparadorCSV;
-            row += regPwd.LastRegId;
+            if (fields == "" || fields.Contains("nom"))
+            {
+                row += regPwd.UserNombre != null ? regPwd.UserNombre : string.Empty;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("cat"))
+            {
+                row += regPwd.Categoria != null ? regPwd.Categoria : string.Empty;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("emp"))
+            {
+                row += regPwd.Empresa != null ? regPwd.Empresa : string.Empty;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("cta"))
+            {
+                row += regPwd.Producto != null ? regPwd.Producto : string.Empty;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("nro"))
+            {
+                row += regPwd.Numero != null ? regPwd.Numero : string.Empty;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("web"))
+            {
+                row += regPwd.Web != null ? regPwd.Web : string.Empty;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("uid"))
+            {
+                row += regPwd.UserId != null ? regPwd.UserId : string.Empty;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("pwd"))
+            {
+                row += regPwd.UserPwd != null ? regPwd.UserPwd : string.Empty;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("ema"))
+            {
+                row += regPwd.UserEMail != null ? regPwd.UserEMail : string.Empty;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("not"))
+            {
+                row += regPwd.UserNota != null ? regPwd.UserNota : string.Empty;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("fcr"))
+            {
+                row += regPwd.CreateDate.ToString(G.FormatoFecha);
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("fup"))
+            {
+                row += regPwd.UpdateDate.ToString(G.FormatoFecha);
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("rid"))
+            {
+                row += regPwd.RegId;
+                row += G.SeparadorCSV;
+            }
+            if (fields == "" || fields.Contains("lid"))
+            {
+                row += regPwd.LastRegId;
+            }
+            if (row[row.Length - 1] == G.SeparadorCSV[0])
+                row = row.Remove(row.Length - 1);
 
             return row;
         }
