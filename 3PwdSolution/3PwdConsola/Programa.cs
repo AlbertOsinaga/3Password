@@ -81,8 +81,9 @@ namespace _3PwdConsola
             void Init()
             {
                 G.ConfigurationRoot = Config();
+                G.Logger = Log.Logger;
                 MR.DirMaestro = G.ConfigurationRoot.GetValue<string>("DirMasterFile");
-                Log.Logger.Information("3Password   MasterFile: {file}", MR.PathMaestro);
+                G.Logger.Information("3Password   MasterFile: {file}", MR.PathMaestro);
             }
 
             // Despliega respuesta (lineaCmd, respuesta)

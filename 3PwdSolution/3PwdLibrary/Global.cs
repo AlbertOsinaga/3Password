@@ -1,6 +1,7 @@
 ﻿#region Header
 
 using Microsoft.Extensions.Configuration;
+using Serilog;
 using System;
 using System.Diagnostics;
 using static System.Console;
@@ -16,6 +17,7 @@ namespace _3PwdLibrary
 
         public static IConfigurationRoot ConfigurationRoot;
         public static string FormatoFecha = "yyyy/MM/dd HH:mm:ss";
+        public static ILogger Logger; 
         public static string NoFecha = "0001/01/01 00:00:00";
         public static string RegNull = "reg null!";
         public static string SeparadorCSV = "|";
