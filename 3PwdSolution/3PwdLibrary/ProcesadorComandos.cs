@@ -76,6 +76,7 @@ namespace _3PwdLibrary
                 case "all":
                 case "add":
                 case "del":
+                case "dir":
                 case "get":
                 case "lst":
                 case "upd":
@@ -115,6 +116,10 @@ namespace _3PwdLibrary
                     case "get":
                         cmds = new[] { "nom", "cat", "emp", "cta", "nro" };
                         break;
+                    case "dir":
+                        regComando.Arg = regComando.Arg.Trim();
+                        regComando.Ok = true;
+                        return;
                     case "lst":
                         if (string.IsNullOrEmpty(regComando.Arg))
                             regComando.Arg = "cta,uid,pwd";
@@ -169,16 +174,19 @@ namespace _3PwdLibrary
                 case "add":
                     ComandoAdd();
                     break;
-                case "del":
-                    ComandoDel();
-                    break;
-                case "get":
-                    ComandoGet();
-                    break;
                 case "all":
                 case "lst":
                 case "viu":
                     ComandoLst();
+                    break;
+                case "del":
+                    ComandoDel();
+                    break;
+                case "dir":
+                    ComandoDir();
+                    break;
+                case "get":
+                    ComandoGet();
                     break;
                 case "upd":
                     ComandoUpd();
@@ -213,6 +221,19 @@ namespace _3PwdLibrary
                     bool deleteOk = MR.DeleteRegPwd(regComando.Arg);
                     respuesta = deleteOk ? "*** registro borrado! ***"
                                          : (MR.HayError ? $"*** {MR.MensajeError} ***" : "*** registro no encontrado! ***");
+                }
+                else
+                {
+                    respuesta = $"*** {MR.MensajeError} ***";
+                }
+            }
+
+            void ComandoDir()
+            {
+                if (!MR.HayError)
+                {
+                    MR.DirMaestro = regComando.Arg;
+                    respuesta = $"*** Ruta a archivo maestro: '{MR.PathMaestro}'! ***";
                 }
                 else
                 {

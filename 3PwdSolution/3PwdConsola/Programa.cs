@@ -1,8 +1,12 @@
 ﻿#region Header
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Serilog;
 using System;
-
+using System.IO;
 using G = _3PwdLibrary.Global;
+using MR = _3PwdLibrary.ManejadorRegistros;
 using PC = _3PwdLibrary.ProcesadorComandos;
 
 namespace _3PwdConsola
@@ -17,6 +21,9 @@ namespace _3PwdConsola
         {
 
 #endregion
+
+            Init();
+            
             var lineaCmd = "";
             GetLineaCmd();
             var respuesta = PC.Run(lineaCmd);
@@ -24,11 +31,58 @@ namespace _3PwdConsola
 
             #region Functions
 
+            // Construye el configurador appsettings
+            void BuildConfig(IConfigurationBuilder builder)
+            
+            {
+                builder.SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+                    .AddEnvironmentVariables();
+            }
+
+            // Config Settings & Logging
+            IConfigurationRoot Config()
+            {
+                var builder = new ConfigurationBuilder();
+                BuildConfig(builder);
+                var configRoot = builder.Build();
+                //Bienvenida.Config = configRoot;
+
+                Log.Logger = new LoggerConfiguration()
+                    //.ReadFrom.Configuration(builder.Build())
+                    .ReadFrom.Configuration(configRoot)
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console()
+                    .CreateLogger();
+
+                //Log.Logger.Information("Application Starting");
+                //Bienvenida.Logger = Log.Logger;
+
+                Host.CreateDefaultBuilder()
+                    //.ConfigureServices((context, services) =>
+                    //{
+                    //    services.AddTransient<IGreetingService, GreetingService>();
+                    //})
+                    .UseSerilog()
+                    .Build();
+
+                return configRoot;
+            }
+
             // Get Linea de Comandos (args, *lineaCmd)
             void GetLineaCmd()
             {
                 foreach (var item in args)
                     lineaCmd += (item + " ");
+            }
+
+            // Inicializa settings & logging
+            void Init()
+            {
+                G.ConfigurationRoot = Config();
+                MR.DirMaestro = G.ConfigurationRoot.GetValue<string>("DirMasterFile");
+                Log.Logger.Information("3Password   MasterFile: {file}", MR.PathMaestro);
             }
 
             // Despliega respuesta (lineaCmd, respuesta)
