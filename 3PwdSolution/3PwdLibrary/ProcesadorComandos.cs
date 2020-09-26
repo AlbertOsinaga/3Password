@@ -122,9 +122,8 @@ namespace _3PwdLibrary
                         return;
                     case "lst":
                         if (string.IsNullOrEmpty(regComando.Arg))
-                            regComando.Arg = "cta,uid,pwd";
-                        regComando.Ok = true;
-                        return;
+                            regComando.Arg = "-fld cta,uid,pwd";
+                        break;
                     case "upd":
                         cmds = new[] { "nom", "cat", "emp", "cta", "nro", "web", "uid", "pwd", "ema", "not", "fcr", "fup", "rid" };
                         break;
@@ -136,23 +135,26 @@ namespace _3PwdLibrary
                         break;
                 }
 
-                var partes = regComando.Arg.Split('-');
-                var campos = new Dictionary<string, string>();
-                foreach (var campo in partes)
+                if (cmds.Length > 0)
                 {
-                    if (campo.Length > 4 && cmds.Where(cmd => cmd == campo.Substring(0, 3)).Any() && campo[3] == ' ')
-                        campos[campo.Substring(0, 3)] = campo.Substring(4).Trim();
+                    var partes = regComando.Arg.Split('-');
+                    var campos = new Dictionary<string, string>();
+                    foreach (var campo in partes)
+                    {
+                        if (campo.Length > 4 && cmds.Where(cmd => cmd == campo.Substring(0, 3)).Any() && campo[3] == ' ')
+                            campos[campo.Substring(0, 3)] = campo.Substring(4).Trim();
+                    }
+
+                    var arg = "";
+                    foreach (var cmd in cmds)
+                    {
+                        if (campos.ContainsKey(cmd))
+                            arg += campos[cmd];
+                        arg += cmd == cmds[cmds.Length - 1] ? "" : "|";
+                    }
+                    regComando.Arg = arg;
                 }
 
-                var arg = "";
-                foreach (var cmd in cmds)
-                {
-                    if (campos.ContainsKey(cmd))
-                        arg += campos[cmd];
-                    arg += cmd == cmds[cmds.Length - 1] ? "" : "|";
-                }
-
-                regComando.Arg = arg;
                 regComando.Ok = true;
                 return;
             }
@@ -163,11 +165,13 @@ namespace _3PwdLibrary
         public static string Run(string comando)
         {
             PC.InitMetodo();
+            if (string.IsNullOrEmpty(comando))
+                return "*** Por favor ingrese un comando! ***";
 
             var respuesta = "";
             var regComando = PC.Parse(comando);
             if (!regComando.Ok)
-                return "Error en Parse!";
+                return "*** Error en Parse! ***";
 
             switch (regComando.Cmd)
             {

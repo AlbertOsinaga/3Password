@@ -2,7 +2,7 @@
   "profiles": {
     "3PwdConsola": {
       "commandName": "Project",
-      "commandLineArgs": "dir /Volumes/Easystore/Dropbox/Docs/"
+      "commandLineArgs": "lst"
     }
   }
 }

@@ -194,7 +194,7 @@ namespace _3PwdLibrary
             ((regPwd.Numero ?? "").Trim().ToLower() + G.SeparadorCSV) +
             (regPwd.LastRegId ?? "").Trim().ToLower() 
             : G.RegNull;
-        public static IEnumerable<RegistroPwd> ListRegsPwd(bool enMaestro = true)
+        public static IEnumerable<RegistroPwd> ListRegsPwd(bool deleted = false, bool enMaestro = true)
         {
             var maestroReadedOk = true;
             MR.InitMetodo();
@@ -202,16 +202,18 @@ namespace _3PwdLibrary
                 maestroReadedOk = ReadMaestro();
 
             if (!maestroReadedOk)
-                return null;
+                return new List<RegistroPwd>();
 
             var regs = MR.TableMaestro.Values.ToList();
+            if (!deleted)
+                regs = regs.Where(r => !(r.LastRegId == r.RegId)).ToList();
             var regsSorted = regs.OrderBy(r => r.Producto);
             return regsSorted;
         }
-        public static IEnumerable<string> ListRowsPwd(string fields = "", bool enMaestro = true)
+        public static IEnumerable<string> ListRowsPwd(string fields = "", bool deleted = false, bool enMaestro = true)
         {
             var rows = new List<string>();
-            var regs = MR.ListRegsPwd(enMaestro);
+            var regs = MR.ListRegsPwd(deleted, enMaestro);
 
             foreach (var reg in regs)
                 rows.Add(MR.RegistroPwdToRow(reg, fields));
@@ -232,10 +234,10 @@ namespace _3PwdLibrary
             }
             return rows;
         }
-        public static string ListRowsPwdAsString(string fields = "", bool enMaestro = true)
+        public static string ListRowsPwdAsString(string fields = "", bool deleted = false, bool enMaestro = true)
         {
             MR.InitMetodo();
-            var rowsPwd = MR.ListRowsPwd(fields, enMaestro);
+            var rowsPwd = MR.ListRowsPwd(fields, deleted, enMaestro);
             return (ListRowsPwdAsString(rowsPwd as List<string>));
         }
         public static IEnumerable<string> ReadFile()

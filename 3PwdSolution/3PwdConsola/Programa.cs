@@ -5,18 +5,15 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
 using System.IO;
+using _3PwdLibrary;
 using G = _3PwdLibrary.Global;
 using MR = _3PwdLibrary.ManejadorRegistros;
 using PC = _3PwdLibrary.ProcesadorComandos;
 
 namespace _3PwdConsola
 {
-
-
-    
     public static class Programa
     {
-        
         static void Main(string[] args)
         {
 
@@ -24,8 +21,7 @@ namespace _3PwdConsola
 
             Init();
             
-            var lineaCmd = "";
-            GetLineaCmd();
+            var lineaCmd = GetLineaCmd();
             var respuesta = PC.Run(lineaCmd);
             WriteRespuesta();
 
@@ -70,11 +66,66 @@ namespace _3PwdConsola
                 return configRoot;
             }
 
-            // Get Linea de Comandos (args, *lineaCmd)
-            void GetLineaCmd()
+            // Get fieldNames
+            string GetFieldNames()
             {
+                if (args.Length == 0)
+                    return "";
+
+                string fieldNames = "Cuenta|Uid|Pwd";
+                if (args.Length == 1 || (args.Length > 0 && !(args[0] == "lst")))
+                    return fieldNames;
+
+                fieldNames = "";
+                int fields = args.Length > 2 ? 2 : 1;
+                if (args.Length > 1)
+                {
+                    if (args[fields].Contains("cta"))
+                        fieldNames += ("Nombre" + G.SeparadorCSV);
+                    if (args[fields].Contains("cat"))
+                        fieldNames += ("Categoria" + G.SeparadorCSV);
+                    if (args[fields].Contains("emp"))
+                        fieldNames += ("Empresa" + G.SeparadorCSV);
+                    if (args[fields].Contains("cta"))
+                        fieldNames += ("Cuenta" + G.SeparadorCSV);
+                    if (args[fields].Contains("nro"))
+                        fieldNames += ("Nro" + G.SeparadorCSV);
+                    if (args[fields].Contains("web"))
+                        fieldNames += ("Web" + G.SeparadorCSV);
+                    if (args[fields].Contains("uid"))
+                        fieldNames += ("Uid" + G.SeparadorCSV);
+                    if (args[fields].Contains("pwd"))
+                        fieldNames += ("Pwd" + G.SeparadorCSV);
+                    if (args[fields].Contains("ema"))
+                        fieldNames += ("Email" + G.SeparadorCSV);
+                    if (args[fields].Contains("not"))
+                        fieldNames += ("Notas" + G.SeparadorCSV);
+                    if (args[fields].Contains("fcr"))
+                        fieldNames += ("Fec Add" + G.SeparadorCSV);
+                    if (args[fields].Contains("fup"))
+                        fieldNames += ("Fec Upd" + G.SeparadorCSV);
+                    if (args[fields].Contains("rid"))
+                        fieldNames += ("RegId" + G.SeparadorCSV);
+                    if (args[fields].Contains("lid"))
+                        fieldNames += ("Last RegId" + G.SeparadorCSV);
+                }
+                if (fieldNames[fieldNames.Length - 1] == G.SeparadorCSV[0])
+                    fieldNames = fieldNames.Remove(fieldNames.Length - 1);
+
+                return fieldNames;
+            }
+
+            // Get Linea de Comandos (args, *lineaCmd)
+            string GetLineaCmd()
+            {
+                var lineaCmd = "";
+                if (args.Length == 0)
+                    return lineaCmd;
+                
                 foreach (var item in args)
                     lineaCmd += (item + " ");
+
+                return lineaCmd;
             }
 
             // Inicializa settings & logging
@@ -83,7 +134,7 @@ namespace _3PwdConsola
                 G.ConfigurationRoot = Config();
                 G.Logger = Log.Logger;
                 MR.DirMaestro = G.ConfigurationRoot.GetValue<string>("DirMasterFile");
-                G.Logger.Information("3Password   MasterFile: {file}", MR.PathMaestro);
+                G.Logger.Information("3Password   V:{Version}  MasterFile: {PathMaestro}", G.Version, MR.PathMaestro);
             }
 
             // Despliega respuesta (lineaCmd, respuesta)
@@ -92,58 +143,22 @@ namespace _3PwdConsola
 
                 Console.WriteLine();
                 Console.WriteLine(lineaCmd);
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                var fieldNames = GetFieldNames();
-                Console.WriteLine(fieldNames);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(respuesta);
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-
-            // Get fieldNames
-            string GetFieldNames()
-            {
-                string fieldNames = "Cuenta|Uid|Pwd";
-                if (args.Length == 1 || (args.Length > 0 && !(args[0] == "lst")))
-                    return fieldNames;
-
-                fieldNames = "";
-                if (args.Length > 1)
+                if (!string.IsNullOrEmpty(respuesta) && (respuesta[0].IsAlphanumeric() || respuesta[0] == G.SeparadorCSV[0]))
                 {
-                    if (args[1].Contains("cta"))
-                        fieldNames += ("Nombre" + G.SeparadorCSV);
-                    if (args[1].Contains("cat"))
-                        fieldNames += ("Categoria" + G.SeparadorCSV);
-                    if (args[1].Contains("emp"))
-                        fieldNames += ("Empresa" + G.SeparadorCSV);
-                    if (args[1].Contains("cta"))
-                        fieldNames += ("Cuenta" + G.SeparadorCSV);
-                    if (args[1].Contains("nro"))
-                        fieldNames += ("Nro" + G.SeparadorCSV);
-                    if (args[1].Contains("web"))
-                        fieldNames += ("Web" + G.SeparadorCSV);
-                    if (args[1].Contains("uid"))
-                        fieldNames += ("Uid" + G.SeparadorCSV);
-                    if (args[1].Contains("pwd"))
-                        fieldNames += ("Pwd" + G.SeparadorCSV);
-                    if (args[1].Contains("ema"))
-                        fieldNames += ("Email" + G.SeparadorCSV);
-                    if (args[1].Contains("not"))
-                        fieldNames += ("Notas" + G.SeparadorCSV);
-                    if (args[1].Contains("fcr"))
-                        fieldNames += ("Fec Add" + G.SeparadorCSV);
-                    if (args[1].Contains("fup"))
-                        fieldNames += ("Fec Upd" + G.SeparadorCSV);
-                    if (args[1].Contains("rid"))
-                        fieldNames += ("RegId" + G.SeparadorCSV);
-                    if (args[1].Contains("lid"))
-                        fieldNames += ("Last RegId" + G.SeparadorCSV);
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    var fieldNames = GetFieldNames();
+                    Console.WriteLine(fieldNames);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(respuesta);
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
-                if (fieldNames[fieldNames.Length - 1] == G.SeparadorCSV[0])
-                    fieldNames = fieldNames.Remove(fieldNames.Length - 1);
-
-                return fieldNames;
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(respuesta);
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
             }
 
             #endregion
