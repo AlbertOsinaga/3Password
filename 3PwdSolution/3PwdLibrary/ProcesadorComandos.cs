@@ -34,7 +34,6 @@ namespace _3PwdLibrary
             PC.HayError = false;
             PC.MensajeError = string.Empty;
         }
-
         public static Comando Parse(string lineaCmd)
         {
             // El objetivo de este metodo es convertir el formato en linea de comandos
@@ -45,12 +44,13 @@ namespace _3PwdLibrary
             #region Body
 
             PC.InitMetodo();
+
             var regComando = new Comando();
 
             if (string.IsNullOrWhiteSpace(lineaCmd))
             {
                 PC.HayError = true;
-                PC.MensajeError = $"Error: linea comando nula o vacia, en {nameof(ProcesadorComandos)}.{nameof(Parse)}!";
+                PC.MensajeError = $"*** Error({nameof(PC.Parse)}): linea comando nula o vacia, en {nameof(ProcesadorComandos)}.{nameof(Parse)}! ***";
                 return regComando;
             }
 
@@ -66,8 +66,8 @@ namespace _3PwdLibrary
             if (regComando.Cmd.Length != 3)
             {
                 PC.HayError = true;
-                PC.MensajeError = $"Error: Comando '{regComando.Cmd}' debe ser de 3 caracteres," +
-                                    $" en {nameof(ProcesadorComandos)}.{nameof(Parse)}!";
+                PC.MensajeError = $"*** Error({nameof(PC.Parse)}): Comando '{regComando.Cmd}' debe ser de 3 caracteres," +
+                                    $" en {nameof(ProcesadorComandos)}.{nameof(Parse)}! ***";
                 return regComando;
             }
 
@@ -85,8 +85,8 @@ namespace _3PwdLibrary
                     return regComando;
                 default:
                     PC.HayError = true;
-                    PC.MensajeError = $"Error: comando '{regComando.Cmd}' no reconcido, " +
-                                        $"en {nameof(ProcesadorComandos)}.{nameof(Parse)}!";
+                    PC.MensajeError = $"*** Error({nameof(PC.Parse)}): comando '{regComando.Cmd}' no reconcido, " +
+                                        $"en {nameof(ProcesadorComandos)}.{nameof(Parse)}! ***";
                     return regComando; ;
             }
 
@@ -161,17 +161,25 @@ namespace _3PwdLibrary
 
             #endregion
         }
-
         public static string Run(string comando)
         {
             PC.InitMetodo();
+
             if (string.IsNullOrEmpty(comando))
-                return "*** Por favor ingrese un comando! ***";
+            {
+                PC.HayError = true;
+                PC.MensajeError = $"*** Error({nameof(PC.Run)}): no se ingreso un comando! ***";
+                return PC.MensajeError;
+            }
 
             var respuesta = "";
             var regComando = PC.Parse(comando);
             if (!regComando.Ok)
-                return "*** Error en Parse! ***";
+            {
+                PC.HayError = true;
+                PC.MensajeError = $"*** Error({nameof(PC.Run)}): Comando invalido! ***";
+                return PC.MensajeError;
+            }
 
             switch (regComando.Cmd)
             {
@@ -206,86 +214,48 @@ namespace _3PwdLibrary
 
             void ComandoAdd()
             {
-                if (!MR.HayError)
-                {
-                    respuesta = MR.CreateRegPwd(regComando.Arg);
-                    if (string.IsNullOrEmpty(respuesta))
-                        respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro duplicado ***" : $"*** {MR.MensajeError} ***";
-                }
-                else
-                {
-                    respuesta = $"*** {MR.MensajeError} ***";
-                }
+                respuesta = MR.CreateRegPwd(regComando.Arg);
+                if (string.IsNullOrEmpty(respuesta))
+                    respuesta = !MR.HayError ? $"*** Registro duplicado ***" 
+                                                : $"*** Error({nameof(ComandoAdd)}): {MR.MensajeError} ***";
             }
 
             void ComandoDel()
             {
-                if (!MR.HayError)
-                {
-                    bool deleteOk = MR.DeleteRegPwd(regComando.Arg);
-                    respuesta = deleteOk ? "*** registro borrado! ***"
-                                         : (MR.HayError ? $"*** {MR.MensajeError} ***" : "*** registro no encontrado! ***");
-                }
-                else
-                {
-                    respuesta = $"*** {MR.MensajeError} ***";
-                }
+                bool deleteOk = MR.DeleteRegPwd(regComando.Arg);
+                respuesta = deleteOk ? "*** Registro borrado! ***"
+                                       : (!MR.HayError ? "*** Registro no encontrado! ***" 
+                                                        : $"*** Error({nameof(ComandoDel)}): {MR.MensajeError} ***");
             }
 
             void ComandoDir()
             {
-                if (!MR.HayError)
-                {
-                    MR.DirMaestro = regComando.Arg;
-                    respuesta = $"*** Ruta a archivo maestro: '{MR.PathMaestro}'! ***";
-                }
-                else
-                {
-                    respuesta = $"*** {MR.MensajeError} ***";
-                }
+                MR.DirMaestro = regComando.Arg;
+                respuesta = $"*** Ruta a archivo maestro: '{MR.PathMaestro}'! ***";
             }
 
             void ComandoGet()
             {
-                if (!MR.HayError)
-                {
-                    respuesta = MR.RetrieveRegPwd(regComando.Arg);
-                    if (string.IsNullOrEmpty(respuesta))
-                        respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro no encontrado ***" : $"*** {MR.MensajeError} ***";
-                }
-                else
-                {
-                    respuesta = $"*** {MR.MensajeError} ***";
-                }
-
+                respuesta = MR.RetrieveRegPwd(regComando.Arg);
+                if (string.IsNullOrEmpty(respuesta))
+                    respuesta = !MR.HayError ? "*** Registro no encontrado ***" 
+                                                : $"*** Error({nameof(ComandoGet)}): {MR.MensajeError} ***";
             }
 
             void ComandoLst()
             {
-                if (!MR.HayError)
-                {
-                    respuesta = MR.ListRowsPwdAsString(regComando.Arg);
-                    if (string.IsNullOrEmpty(respuesta))
-                        respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** no hay registros ***" : $"*** {MR.MensajeError} ***";
-                }
-                else
-                {
-                    respuesta = $"*** {MR.MensajeError} ***";
-                }
+                respuesta = MR.ListRowsPwdAsString(regComando.Arg);
+                if (string.IsNullOrEmpty(respuesta))
+                    respuesta = !MR.HayError ? "*** No hay registros ***" 
+                                                : $"*** Error({nameof(ComandoLst)}): {MR.MensajeError} ***";
             }
 
             void ComandoUpd()
             {
-                if (!MR.HayError)
-                {
-                    respuesta = MR.UpdateRegPwd(regComando.Arg);
-                    if (string.IsNullOrEmpty(respuesta))
-                        respuesta = string.IsNullOrEmpty(MR.MensajeError) ? "*** registro no encontrado ***" : $"*** {MR.MensajeError} ***";
-                }
-                else
-                {
-                    respuesta = $"*** {MR.MensajeError} ***";
-                }
+                respuesta = MR.UpdateRegPwd(regComando.Arg);
+                if (string.IsNullOrEmpty(respuesta))
+                    respuesta = !MR.HayError ? "*** Registro no encontrado ***" 
+                                                : $"*** Error({nameof(ComandoUpd)}): {MR.MensajeError} ***";
             }
 
             #endregion

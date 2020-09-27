@@ -69,26 +69,31 @@ namespace _3PwdLibrary
 
         public static RegistroPwd CreateRegPwd(RegistroPwd regPwd, bool enMaestro = true)
         {
-            var maestroReadedOk = true;
             MR.InitMetodo();
+
+            var maestroReadedOk = true;
             if (enMaestro)
                 maestroReadedOk = ReadMaestro();
 
             if (!maestroReadedOk)
+            {
+                MR.HayError = true;
+                MR.MensajeError = $"*** Error({nameof(MR.CreateRegPwd)}): No se pudo leer el archivo maestro '{MR.PathMaestro}'!";
                 return null;
+            }
 
             string key = MR.KeyOfRegistroPwd(regPwd);
             if (!MR.IsKeyValida(key))
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Error: key invalida: '{key??"null"}'" + 
+                MR.MensajeError = $"Error({nameof(MR.CreateRegPwd)}): key invalida: '{key??"null"}'" + 
                                   $", en {nameof(ManejadorRegistros)}.{nameof(CreateRegPwd)}!";
                 return null;
             }
             if (MR.KeyExiste(key))
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Error: key duplicada: '{key ?? "null"}'" +
+                MR.MensajeError = $"Error({nameof(MR.CreateRegPwd)}): key duplicada: '{key ?? "null"}'" +
                                   $", en {nameof(ManejadorRegistros)}.{nameof(CreateRegPwd)}!";
                 return null;
             }
@@ -112,33 +117,38 @@ namespace _3PwdLibrary
             return MR.RegistroPwdToRow(regPwdAdd);
         }
         public static void ClearTableMaestro()
-        { 
+        {
             MR.TableMaestro.Clear();
             MR.Updated = false;
             MR.StatusMaestro = MR.StatusWrited;
         }
         public static bool DeleteRegPwd(RegistroPwd regPwd, bool enMaestro = true)
         {
-            var maestroReadedOk = true;
             MR.InitMetodo();
+
+            var maestroReadedOk = true;
             if (enMaestro)
                 maestroReadedOk = ReadMaestro();
 
             if (!maestroReadedOk)
+            {
+                MR.HayError = true;
+                MR.MensajeError = $"*** Error({nameof(MR.DeleteRegPwd)}): No se pudo leer el archivo maestro '{MR.PathMaestro}'!";
                 return false;
+            }
 
             string key = MR.KeyOfRegistroPwd(regPwd);
             if (!MR.IsKeyValida(key))
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Error: key invalida: '{key ?? "null"}'" +
+                MR.MensajeError = $"Error({nameof(MR.DeleteRegPwd)}): key invalida: '{key ?? "null"}'" +
                                   $", en {nameof(ManejadorRegistros)}.{nameof(DeleteRegPwd)}!";
                 return false;
             }
             if (!MR.KeyExiste(key))
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Error: key inexistente: '{key ?? "null"}'" +
+                MR.MensajeError = $"Error({nameof(MR.DeleteRegPwd)}): key inexistente: '{key ?? "null"}'" +
                                   $", en {nameof(ManejadorRegistros)}.{nameof(DeleteRegPwd)}!";
                 return false;
             }
@@ -162,6 +172,8 @@ namespace _3PwdLibrary
         }
         public static bool EmptyMaestro()
         {
+            MR.InitMetodo();
+
             try
             {
                 MR.InitMetodo();
@@ -185,24 +197,31 @@ namespace _3PwdLibrary
         }
         public static bool IsKeyValida(string key) => !string.IsNullOrEmpty(key) && !(key == MR.KeyVacia) && !(key == G.RegNull);
         public static bool KeyExiste(string key) => MR.TableMaestro.ContainsKey(key);
-        public static string KeyOfRegistroPwd(RegistroPwd regPwd) =>
-            regPwd != null ?
+        public static string KeyOfRegistroPwd(RegistroPwd regPwd)
+        {
+            return regPwd != null ?
             ((regPwd.UserNombre ?? "").Trim().ToLower() + G.SeparadorCSV) +
             ((regPwd.Categoria ?? "").Trim().ToLower() + G.SeparadorCSV) +
             ((regPwd.Empresa ?? "").Trim().ToLower() + G.SeparadorCSV) +
             ((regPwd.Producto ?? "").Trim().ToLower() + G.SeparadorCSV) +
             ((regPwd.Numero ?? "").Trim().ToLower() + G.SeparadorCSV) +
-            (regPwd.LastRegId ?? "").Trim().ToLower() 
+            (regPwd.LastRegId ?? "").Trim().ToLower()
             : G.RegNull;
+        }
         public static IEnumerable<RegistroPwd> ListRegsPwd(bool deleted = false, bool enMaestro = true)
         {
-            var maestroReadedOk = true;
             MR.InitMetodo();
+
+            var maestroReadedOk = true;
             if (enMaestro)
                 maestroReadedOk = ReadMaestro();
 
             if (!maestroReadedOk)
+            {
+                MR.HayError = true;
+                MR.MensajeError = $"*** Error({nameof(MR.ListRegsPwd)}): No se pudo leer el archivo maestro '{MR.PathMaestro}'!";
                 return new List<RegistroPwd>();
+            }
 
             var regs = MR.TableMaestro.Values.ToList();
             if (!deleted)
@@ -236,7 +255,6 @@ namespace _3PwdLibrary
         }
         public static string ListRowsPwdAsString(string fields = "", bool deleted = false, bool enMaestro = true)
         {
-            MR.InitMetodo();
             var rowsPwd = MR.ListRowsPwd(fields, deleted, enMaestro);
             return (ListRowsPwdAsString(rowsPwd as List<string>));
         }
@@ -264,21 +282,22 @@ namespace _3PwdLibrary
             // Para una nueva lectura efectiva, desde archivo Maestro,
             // debe estarse en status (writed = no readed)
 
+            MR.InitMetodo();
+
             if (MR.IsMaestroReaded)
                 return true;
 
-            MR.InitMetodo();
             if (string.IsNullOrWhiteSpace(MR.PathMaestro))
             {
                 string nulo_enblanco = MR.PathMaestro == null ? "nulo" : "en blanco";
                 MR.HayError = true;
-                MR.MensajeError = $"Nombre de archivo Maestro {nulo_enblanco}!";
+                MR.MensajeError = $"*** Error({nameof(MR.ReadMaestro)}): Nombre de archivo Maestro {nulo_enblanco}! ***";
                 return false;
             }
             if (!File.Exists(MR.PathMaestro))
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Archivo Maestro '{MR.PathMaestro}' no existe!";
+                MR.MensajeError = $"*** Error({nameof(MR.ReadMaestro)}): Archivo Maestro '{MR.PathMaestro}' no existe! ***";
                 return false;
             }
 
@@ -306,7 +325,6 @@ namespace _3PwdLibrary
         }
         public static string RegistroPwdToRow(RegistroPwd regPwd, string fields = "")
         {
-            MR.InitMetodo();
             if (regPwd == null)
                 return "";
 
@@ -387,19 +405,24 @@ namespace _3PwdLibrary
         }
         public static RegistroPwd RetrieveRegPwd(RegistroPwd regPwd, bool enMaestro = true)
         {
-            var maestroReadedOk = true;
             MR.InitMetodo();
+
+            var maestroReadedOk = true;
             if (enMaestro)
                 maestroReadedOk = ReadMaestro();
 
             if (!maestroReadedOk)
+            {
+                MR.HayError = true;
+                MR.MensajeError = $"*** Error({nameof(MR.RetrieveRegPwd)}): No se pudo leer el archivo maestro '{MR.PathMaestro}'!";
                 return null;
+            }
 
             string key = MR.KeyOfRegistroPwd(regPwd);
             if (!MR.IsKeyValida(key))
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Error: key invalida: '{key ?? "null"}'" +
+                MR.MensajeError = $"Error({nameof(MR.RetrieveRegPwd)}): key invalida: '{key ?? "null"}'" +
                                   $", en {nameof(ManejadorRegistros)}.{nameof(RetrieveRegPwd)}!";
                 return null;
             }
@@ -418,16 +441,17 @@ namespace _3PwdLibrary
         public static bool RowsToTable(string[] rows)
         {
             MR.InitMetodo();
+
             if (rows == null)
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Error: rows null, en {nameof(ManejadorRegistros)}.{nameof(RowsToTable)}!";
+                MR.MensajeError = $"Error({nameof(MR.RowsToTable)}): rows null, en {nameof(ManejadorRegistros)}.{nameof(RowsToTable)}!";
                 return false;
             }
             if (rows.Length == 0)
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Error: rows sin registros, en {nameof(ManejadorRegistros)}.{nameof(RowsToTable)}!";
+                MR.MensajeError = $"Error({nameof(MR.RowsToTable)}): rows sin registros, en {nameof(ManejadorRegistros)}.{nameof(RowsToTable)}!";
                 return false;
             }
 
@@ -455,10 +479,11 @@ namespace _3PwdLibrary
         public static RegistroPwd RowToRegistroPwd(string row)
         {
             MR.InitMetodo();
+
             if (row == null)
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Error: row nula, en {nameof(ManejadorRegistros)}.{nameof(RowToRegistroPwd)}!";
+                MR.MensajeError = $"Error({nameof(MR.RowToRegistroPwd)}): row nula, en {nameof(ManejadorRegistros)}.{nameof(RowToRegistroPwd)}!";
                 return null;
             }
 
@@ -496,26 +521,31 @@ namespace _3PwdLibrary
         }
         public static RegistroPwd UpdateRegPwd(RegistroPwd regPwd, bool enMaestro = true)
         {
-            var maestroReadedOk = true;
             MR.InitMetodo();
+
+            var maestroReadedOk = true;
             if (enMaestro)
                 maestroReadedOk = ReadMaestro();
 
             if (!maestroReadedOk)
+            {
+                MR.HayError = true;
+                MR.MensajeError = $"*** Error({nameof(MR.UpdateRegPwd)}): No se pudo leer el archivo maestro '{MR.PathMaestro}'!";
                 return null;
+            }
 
             string key = MR.KeyOfRegistroPwd(regPwd);
             if (!MR.IsKeyValida(key))
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Error: key invalida: '{key ?? "null"}'" +
+                MR.MensajeError = $"Error({nameof(MR.UpdateRegPwd)}): key invalida: '{key ?? "null"}'" +
                                   $", en {nameof(ManejadorRegistros)}.{nameof(UpdateRegPwd)}!";
                 return null;
             }
             if (!MR.KeyExiste(key))
             {
                 MR.HayError = true;
-                MR.MensajeError = $"Error: key inexistente: '{key ?? "null"}'" +
+                MR.MensajeError = $"Error({nameof(MR.UpdateRegPwd)}): key inexistente: '{key ?? "null"}'" +
                                   $", en {nameof(ManejadorRegistros)}.{nameof(UpdateRegPwd)}!";
                 return null;
             }
@@ -580,14 +610,14 @@ namespace _3PwdLibrary
             // debe estarse en status (readed = no writed)
             // - Solo se escribe al archivo si el flag Updated es true.
 
+            MR.InitMetodo();
+
             if (!MR.IsMaestroReaded)
             {
                 MR.HayError = true;
-                MR.MensajeError = "Maestro no leido o ya escrito con anterioridad!";
+                MR.MensajeError = $"*** Error({nameof(MR.WriteMaestro)}): Maestro no leido o ya escrito con anterioridad! ***";
                 return false;
             }
-
-            MR.InitMetodo();
 
             try
             {
