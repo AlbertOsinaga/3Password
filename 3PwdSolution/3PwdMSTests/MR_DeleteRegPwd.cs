@@ -30,7 +30,7 @@ namespace _3PwdMSTests
             // Probar
             Assert.IsFalse(deleteOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: key invalida: '{MR.KeyVacia}', en ManejadorRegistros.DeleteRegPwd!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.DeleteRegPwd): key invalida: '{MR.KeyVacia}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace _3PwdMSTests
             // Probar
             Assert.IsFalse(deleteOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: key invalida: '{MR.KeyVacia}', en ManejadorRegistros.DeleteRegPwd!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.DeleteRegPwd): key invalida: '{MR.KeyVacia}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -60,7 +60,7 @@ namespace _3PwdMSTests
             // Probar
             Assert.IsFalse(deleteOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: key invalida: '{G.RegNull}', en ManejadorRegistros.DeleteRegPwd!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.DeleteRegPwd): key invalida: '{G.RegNull}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -142,7 +142,7 @@ namespace _3PwdMSTests
             // Probar
             Assert.IsFalse(deleteOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: key invalida: '{MR.KeyVacia}', en ManejadorRegistros.DeleteRegPwd!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.DeleteRegPwd): key invalida: '{MR.KeyVacia}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -157,7 +157,7 @@ namespace _3PwdMSTests
             // Probar
             Assert.IsFalse(deleteOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: key invalida: '{G.RegNull}', en ManejadorRegistros.DeleteRegPwd!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.DeleteRegPwd): key invalida: '{G.RegNull}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -172,7 +172,7 @@ namespace _3PwdMSTests
             // Probar
             Assert.IsFalse(deleteOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: key invalida: '{MR.KeyVacia}', en ManejadorRegistros.DeleteRegPwd!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.DeleteRegPwd): key invalida: '{MR.KeyVacia}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -227,7 +227,7 @@ namespace _3PwdMSTests
             Assert.IsFalse(MR.HayError);
             Assert.AreEqual("", MR.MensajeError);
             string rowPwdGet = MR.RetrieveRegPwd(rowPwd);
-            Assert.IsNull(rowPwdGet);
+            Assert.AreEqual("", rowPwdGet);
             MR.NameMaestro = MR.NameMaestro_Default;
         }
     }

@@ -31,7 +31,7 @@ namespace _3PwdMSTests
             // Probar
             Assert.IsNull(regPwdGet);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: key invalida: '{MR.KeyVacia}', en ManejadorRegistros.RetrieveRegPwd!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.RetrieveRegPwd): key invalida: '{MR.KeyVacia}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace _3PwdMSTests
             // Probar
             Assert.IsNull(regPwdGet);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: key invalida: '{MR.KeyVacia}', en ManejadorRegistros.RetrieveRegPwd!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.RetrieveRegPwd): key invalida: '{MR.KeyVacia}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -61,7 +61,7 @@ namespace _3PwdMSTests
             // Probar
             Assert.IsNull(regPwdGet);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: key invalida: '{G.RegNull}', en ManejadorRegistros.RetrieveRegPwd!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.RetrieveRegPwd): key invalida: '{G.RegNull}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -141,9 +141,9 @@ namespace _3PwdMSTests
             string rowPwdGet = MR.RetrieveRegPwd(rowPwd, enMaestro: false);
 
             // Probar
-            Assert.IsNull(rowPwdGet);
+            Assert.AreEqual("", rowPwdGet);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: reg null, en ManejadorRegistros.RegistroPwdToRow!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.RetrieveRegPwd): key invalida: '{MR.KeyVacia}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -156,9 +156,9 @@ namespace _3PwdMSTests
             string rowPwdGet = MR.RetrieveRegPwd(rowPwd, enMaestro: false);
 
             // Probar
-            Assert.IsNull(rowPwdGet);
+            Assert.AreEqual("", rowPwdGet);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: reg null, en ManejadorRegistros.RegistroPwdToRow!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.RetrieveRegPwd): key invalida: '{G.RegNull}'! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -171,9 +171,9 @@ namespace _3PwdMSTests
             string rowPwdGet = MR.RetrieveRegPwd(rowPwd, enMaestro: false);
 
             // Probar
-            Assert.IsNull(rowPwdGet);
+            Assert.AreEqual("", rowPwdGet);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Error: reg null, en ManejadorRegistros.RegistroPwdToRow!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.RetrieveRegPwd): key invalida: '{MR.KeyVacia}'! ***", MR.MensajeError);
         }
 
         [TestMethod]

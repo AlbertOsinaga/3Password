@@ -123,7 +123,7 @@ namespace _3PwdMSTests
             // Prueba
             Assert.IsFalse(readedOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual("Nombre de archivo Maestro en blanco!", MR.MensajeError);
+            Assert.AreEqual("*** Error(MR.ReadMaestro): Nombre de archivo Maestro en blanco! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -140,7 +140,7 @@ namespace _3PwdMSTests
             // Prueba
             Assert.IsFalse(readedOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual($"Archivo Maestro '{MR.PathMaestro}' no existe!", MR.MensajeError);
+            Assert.AreEqual($"*** Error(MR.ReadMaestro): Archivo Maestro '{MR.PathMaestro}' no existe! ***", MR.MensajeError);
             MR.NameMaestro = MR.NameMaestro_Default;
         }
 
@@ -157,7 +157,7 @@ namespace _3PwdMSTests
             // Prueba
             Assert.IsFalse(readedOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual("Nombre de archivo Maestro nulo!", MR.MensajeError);
+            Assert.AreEqual("*** Error(MR.ReadMaestro): Nombre de archivo Maestro nulo! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -297,9 +297,7 @@ namespace _3PwdMSTests
             string row = MR.RegistroPwdToRow(null);
 
             // Prueba
-            Assert.IsNull(row);
-            Assert.IsTrue(MR.HayError);
-            Assert.AreEqual("Error: reg null, en ManejadorRegistros.RegistroPwdToRow!", MR.MensajeError);
+            Assert.AreEqual("", row);
         }
 
         #endregion
@@ -311,7 +309,6 @@ namespace _3PwdMSTests
         {
             // Prepara
             var rows = new string[] { };
-            var mensajeEsperado = "Error: rows sin registros, en ManejadorRegistros.RowsToTable!";
 
             // Ejecuta
             bool resultOk = MR.RowsToTable(rows);
@@ -319,22 +316,22 @@ namespace _3PwdMSTests
             // Prueba
             Assert.IsFalse(resultOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual(mensajeEsperado, MR.MensajeError);
+            Assert.AreEqual("*** Error(MR.RowsToTable): Rows sin registros! ***", MR.MensajeError);
         }
 
         [TestMethod]
         public void RowsToTable_rowsNull()
         {
             // Prepara
-            var mensajeEsperado = "Error: rows null, en ManejadorRegistros.RowsToTable!";
+            string[] row = null;
 
             // Ejecuta
-            bool resultOk = MR.RowsToTable(null);
+            bool resultOk = MR.RowsToTable(row);
 
             // Prueba
             Assert.IsFalse(resultOk);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual(mensajeEsperado, MR.MensajeError);
+            Assert.AreEqual("*** Error(MR.RowsToTable): Rows null! ***", MR.MensajeError);
         }
 
         [TestMethod]
@@ -430,14 +427,10 @@ namespace _3PwdMSTests
 
             // Ejecuta
             RegistroPwd regPwd = MR.RowToRegistroPwd(rowIn);
-            bool hayError = MR.HayError;
-            bool isEmpty = MR.MensajeError == string.Empty;
 
             // Prueba
             string row = MR.RegistroPwdToRow(regPwd);
             Assert.AreEqual(rowEsperada, row);
-            Assert.IsFalse(hayError);
-            Assert.IsTrue(isEmpty);
         }
 
         [TestMethod]
@@ -449,14 +442,10 @@ namespace _3PwdMSTests
 
             // Ejecuta
             RegistroPwd regPwd = MR.RowToRegistroPwd(rowIn);
-            bool hayError = MR.HayError;
-            bool isEmpty = MR.MensajeError == string.Empty;
 
             // Prueba
             string row = MR.RegistroPwdToRow(regPwd);
             Assert.AreEqual(rowEsperada, row);
-            Assert.IsFalse(hayError);
-            Assert.IsTrue(isEmpty);
         }
 
         #endregion
@@ -553,7 +542,7 @@ namespace _3PwdMSTests
             // Prueba
             Assert.IsFalse(okWrited);
             Assert.IsTrue(MR.HayError);
-            Assert.AreEqual("Maestro no leido o ya escrito con anterioridad!", MR.MensajeError);
+            Assert.AreEqual("*** Error(MR.WriteMaestro): Maestro no leido o ya escrito con anterioridad! ***", MR.MensajeError);
         }
 
         #endregion

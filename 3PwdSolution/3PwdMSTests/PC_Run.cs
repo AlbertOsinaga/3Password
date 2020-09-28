@@ -13,21 +13,6 @@ namespace _3PwdMSTests
     [TestClass]
     public class PC_Run
     {
-
-        [TestMethod]
-        public void Test1()
-        {
-            // Prepara
-            var linea = "add -nom Luis Alberto -cat cat Software -emp Microsoft -cta Azure -nro Cuenta 1 " +
-                        " -web web.azure.com -uid laos -pwd clavesecreta -ema luis.@gmail.com -not prueba de Registro";
-
-            // Ejecuta
-            PC.Parse(linea);
-
-            // Prueba
-
-        }
-
         [TestMethod]
         public void Add_ok()
         {
@@ -60,7 +45,7 @@ namespace _3PwdMSTests
 
             // Prueba
             Assert.IsNotNull(respuesta);
-            Assert.AreEqual("*** registro borrado! ***", respuesta);
+            Assert.AreEqual("*** Registro borrado! ***", respuesta);
         }
 
         [TestMethod]
@@ -83,7 +68,7 @@ namespace _3PwdMSTests
         }
 
         [TestMethod]
-        public void Lst_ok()
+        public void Lst_all_ok()
         {
             // Prepara
             MR.NameMaestro = MR.NameMaestro_Default;
@@ -102,7 +87,7 @@ namespace _3PwdMSTests
             var respuestaEsperada4 = "Luigi|Programas||Gmail LAOS|||luis@gmail.com|claveSecreta$";
 
             // Ejecuta
-            lineaComando = "lst";
+            lineaComando = "all";
             respuesta = PC.Run(lineaComando);
 
             // Prueba

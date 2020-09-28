@@ -99,7 +99,7 @@ namespace _3PwdMSTests
             // Prueba
             Assert.IsTrue(regCmd.Ok);
             Assert.AreEqual("lst", regCmd.Cmd);
-            Assert.AreEqual("", regCmd.Arg);
+            Assert.AreEqual("-nom Luis Alberto -cat Software -emp Microsoft -cta Microsoft Azure -nro 0001", regCmd.Arg);
         }
 
         [TestMethod]

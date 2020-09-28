@@ -19,7 +19,7 @@ namespace _3PwdLibrary
         public static string FormatoFecha = "yyyy/MM/dd HH:mm:ss";
         public static ILogger Logger; 
         public static string NoFecha = "0001/01/01 00:00:00";
-        public static string RegNull = "reg null!";
+        public static string RegNull = "reg null";
         public static string SeparadorCSV = "|";
         public static string Version = "0.1";
 
