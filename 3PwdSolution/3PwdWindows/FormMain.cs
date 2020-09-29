@@ -23,7 +23,7 @@ namespace _3PwdWindows
     {
         #region Propiedades
 
-        List<RegistroPwd> Pwds { get; set; } = new List<RegistroPwd>();
+        List<RegistroPwd> Pwds { get; set; }
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace _3PwdWindows
             G.ConfigurationRoot = Config();
             G.Logger = Log.Logger;
             MR.DirMaestro = G.ConfigurationRoot.GetValue<string>("DirMasterFile");
-            lblVersionMasterFile.Text = $"3Password   V:{G.Version}  MasterFile:{MR.PathMaestro}";
+            lblMensaje.Text = $"3Password   V:{G.Version}  MasterFile:{MR.PathMaestro}";
 
             #region Functions
 
@@ -88,6 +88,7 @@ namespace _3PwdWindows
 
         private void LoadPwds()
         {
+            Pwds = new List<RegistroPwd>();
             var respuesta = PC.Run("all");
             if (string.IsNullOrEmpty(respuesta))
                 return;
@@ -110,6 +111,8 @@ namespace _3PwdWindows
             lbxCuentas.DataSource = Pwds;
             lbxCuentas.DisplayMember = "Producto";
             lbxCuentas.ValueMember = "Producto";
+            lbxCuentas.Refresh();
+            lbxCuentas.Focus();
         }
 
         private void lbxCuentas_SelectedIndexChanged(object sender, EventArgs e)
@@ -121,12 +124,48 @@ namespace _3PwdWindows
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-           
+            txtId.Enabled = true;
+            txtId.ReadOnly = false;
+            txtPwd.Enabled = true;
+            txtPwd.ReadOnly = false;
+            lbxCuentas.Enabled = false;
+
+            btnNew.Visible = false;
+            btnEdit.Visible = false;
+            btnDelete.Visible = true;
+            btnCancel.Visible = true;
+            btnSave.Visible = true;
+
+            txtId.Focus();
         }
 
         private void btnShowPwd_Click(object sender, EventArgs e)
         {
             txtPwd.Text = (lbxCuentas.SelectedItem as RegistroPwd).UserPwd;
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            var frm = new FormNew();
+            frm.ShowDialog();
+            LoadPwds();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            txtId.Enabled = false;
+            txtId.ReadOnly = true;
+            txtPwd.Enabled = false;
+            txtPwd.ReadOnly = true;
+            lbxCuentas.Enabled = true;
+
+            btnNew.Visible = true;
+            btnEdit.Visible = true;
+            btnDelete.Visible = false;
+            btnCancel.Visible = false;
+            btnSave.Visible = false;
+
+            lbxCuentas.Focus();
         }
     }
 }

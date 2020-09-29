@@ -32,9 +32,11 @@ namespace _3PwdWindows
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.lbxCuentas = new System.Windows.Forms.ListBox();
-            this.lblVersionMasterFile = new System.Windows.Forms.Label();
             this.lblMensaje = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnCopy = new System.Windows.Forms.Button();
+            this.btnNew = new System.Windows.Forms.Button();
+            this.btnEdit = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -44,15 +46,14 @@ namespace _3PwdWindows
             this.txtId = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.lblCuenta = new System.Windows.Forms.Label();
-            this.btnEdit = new System.Windows.Forms.Button();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTipShow = new System.Windows.Forms.ToolTip(this.components);
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(36, 32);
+            this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 15);
             this.label1.TabIndex = 0;
@@ -60,37 +61,31 @@ namespace _3PwdWindows
             // 
             // lbxCuentas
             // 
+            this.lbxCuentas.BackColor = System.Drawing.Color.AliceBlue;
             this.lbxCuentas.FormattingEnabled = true;
             this.lbxCuentas.ItemHeight = 15;
-            this.lbxCuentas.Location = new System.Drawing.Point(32, 63);
+            this.lbxCuentas.Location = new System.Drawing.Point(12, 27);
             this.lbxCuentas.Name = "lbxCuentas";
-            this.lbxCuentas.Size = new System.Drawing.Size(148, 319);
+            this.lbxCuentas.Size = new System.Drawing.Size(148, 364);
             this.lbxCuentas.TabIndex = 1;
             this.lbxCuentas.SelectedIndexChanged += new System.EventHandler(this.lbxCuentas_SelectedIndexChanged);
             // 
-            // lblVersionMasterFile
-            // 
-            this.lblVersionMasterFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblVersionMasterFile.AutoSize = true;
-            this.lblVersionMasterFile.Location = new System.Drawing.Point(374, 9);
-            this.lblVersionMasterFile.Name = "lblVersionMasterFile";
-            this.lblVersionMasterFile.Size = new System.Drawing.Size(30, 15);
-            this.lblVersionMasterFile.TabIndex = 2;
-            this.lblVersionMasterFile.Text = "V/M";
-            // 
             // lblMensaje
             // 
-            this.lblMensaje.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblMensaje.AutoSize = true;
-            this.lblMensaje.Location = new System.Drawing.Point(374, 32);
+            this.lblMensaje.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblMensaje.Location = new System.Drawing.Point(12, 395);
             this.lblMensaje.Name = "lblMensaje";
-            this.lblMensaje.Size = new System.Drawing.Size(18, 15);
+            this.lblMensaje.Size = new System.Drawing.Size(521, 19);
             this.lblMensaje.TabIndex = 3;
             this.lblMensaje.Text = "M";
             // 
             // panel1
             // 
-            this.panel1.BackColor = System.Drawing.Color.LightBlue;
+            this.panel1.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.btnCopy);
+            this.panel1.Controls.Add(this.btnNew);
+            this.panel1.Controls.Add(this.btnEdit);
             this.panel1.Controls.Add(this.btnSave);
             this.panel1.Controls.Add(this.btnCancel);
             this.panel1.Controls.Add(this.btnDelete);
@@ -100,14 +95,45 @@ namespace _3PwdWindows
             this.panel1.Controls.Add(this.txtId);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.lblCuenta);
-            this.panel1.Location = new System.Drawing.Point(196, 63);
+            this.panel1.Location = new System.Drawing.Point(157, 27);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(364, 319);
+            this.panel1.Size = new System.Drawing.Size(427, 364);
             this.panel1.TabIndex = 4;
+            // 
+            // btnCopy
+            // 
+            this.btnCopy.Location = new System.Drawing.Point(364, 84);
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(44, 23);
+            this.btnCopy.TabIndex = 10;
+            this.btnCopy.Tag = "";
+            this.btnCopy.Text = "cop";
+            this.toolTipShow.SetToolTip(this.btnCopy, "Copiar");
+            this.btnCopy.UseVisualStyleBackColor = true;
+            // 
+            // btnNew
+            // 
+            this.btnNew.Location = new System.Drawing.Point(252, 10);
+            this.btnNew.Name = "btnNew";
+            this.btnNew.Size = new System.Drawing.Size(75, 23);
+            this.btnNew.TabIndex = 0;
+            this.btnNew.Text = "Nueva";
+            this.btnNew.UseVisualStyleBackColor = true;
+            this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
+            // 
+            // btnEdit
+            // 
+            this.btnEdit.Location = new System.Drawing.Point(333, 10);
+            this.btnEdit.Name = "btnEdit";
+            this.btnEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnEdit.TabIndex = 5;
+            this.btnEdit.Text = "Editar";
+            this.btnEdit.UseVisualStyleBackColor = true;
+            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(277, 286);
+            this.btnSave.Location = new System.Drawing.Point(333, 327);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 8;
@@ -117,17 +143,18 @@ namespace _3PwdWindows
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(188, 286);
+            this.btnCancel.Location = new System.Drawing.Point(252, 327);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "Cancelar";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Visible = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(24, 286);
+            this.btnDelete.Location = new System.Drawing.Point(21, 327);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 23);
             this.btnDelete.TabIndex = 6;
@@ -137,29 +164,28 @@ namespace _3PwdWindows
             // 
             // btnShowPwd
             // 
-            this.btnShowPwd.Location = new System.Drawing.Point(308, 87);
+            this.btnShowPwd.Location = new System.Drawing.Point(314, 84);
             this.btnShowPwd.Name = "btnShowPwd";
             this.btnShowPwd.Size = new System.Drawing.Size(44, 23);
             this.btnShowPwd.TabIndex = 5;
             this.btnShowPwd.Tag = "";
             this.btnShowPwd.Text = "<o>";
-            this.toolTip1.SetToolTip(this.btnShowPwd, "Mostrar");
+            this.toolTipShow.SetToolTip(this.btnShowPwd, "Mostrar");
             this.btnShowPwd.UseVisualStyleBackColor = true;
             this.btnShowPwd.Click += new System.EventHandler(this.btnShowPwd_Click);
             // 
             // txtPwd
             // 
             this.txtPwd.Enabled = false;
-            this.txtPwd.Location = new System.Drawing.Point(103, 87);
+            this.txtPwd.Location = new System.Drawing.Point(100, 84);
             this.txtPwd.Name = "txtPwd";
-            this.txtPwd.ReadOnly = true;
-            this.txtPwd.Size = new System.Drawing.Size(199, 23);
+            this.txtPwd.Size = new System.Drawing.Size(208, 23);
             this.txtPwd.TabIndex = 4;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(28, 87);
+            this.label4.Location = new System.Drawing.Point(34, 84);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(60, 15);
             this.label4.TabIndex = 3;
@@ -168,16 +194,15 @@ namespace _3PwdWindows
             // txtId
             // 
             this.txtId.Enabled = false;
-            this.txtId.Location = new System.Drawing.Point(103, 54);
+            this.txtId.Location = new System.Drawing.Point(100, 51);
             this.txtId.Name = "txtId";
-            this.txtId.ReadOnly = true;
-            this.txtId.Size = new System.Drawing.Size(199, 23);
+            this.txtId.Size = new System.Drawing.Size(208, 23);
             this.txtId.TabIndex = 2;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 57);
+            this.label3.Location = new System.Drawing.Point(21, 54);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 15);
             this.label3.TabIndex = 1;
@@ -190,31 +215,20 @@ namespace _3PwdWindows
             this.lblCuenta.AutoSize = true;
             this.lblCuenta.BackColor = System.Drawing.Color.CornflowerBlue;
             this.lblCuenta.ForeColor = System.Drawing.Color.White;
-            this.lblCuenta.Location = new System.Drawing.Point(136, 19);
+            this.lblCuenta.Location = new System.Drawing.Point(21, 14);
             this.lblCuenta.Name = "lblCuenta";
             this.lblCuenta.Size = new System.Drawing.Size(45, 15);
             this.lblCuenta.TabIndex = 0;
             this.lblCuenta.Text = "Cuenta";
             // 
-            // btnEdit
-            // 
-            this.btnEdit.Location = new System.Drawing.Point(566, 63);
-            this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(75, 23);
-            this.btnEdit.TabIndex = 5;
-            this.btnEdit.Text = "Editar";
-            this.btnEdit.UseVisualStyleBackColor = true;
-            this.btnEdit.Click += new System.EventHandler(this.btnEdit_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.btnEdit);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(596, 423);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblMensaje);
-            this.Controls.Add(this.lblVersionMasterFile);
             this.Controls.Add(this.lbxCuentas);
             this.Controls.Add(this.label1);
             this.Name = "FormMain";
@@ -231,7 +245,6 @@ namespace _3PwdWindows
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListBox lbxCuentas;
-        private System.Windows.Forms.Label lblVersionMasterFile;
         private System.Windows.Forms.Label lblMensaje;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TextBox txtPwd;
@@ -244,6 +257,8 @@ namespace _3PwdWindows
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolTip toolTipShow;
+        private System.Windows.Forms.Button btnNew;
+        private System.Windows.Forms.Button btnCopy;
     }
 }
