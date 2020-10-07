@@ -42,7 +42,6 @@ namespace _3PwdWindows
             }
 
             var cmd = "add";
-            cmd += !string.IsNullOrEmpty(txtCategoria.Text) ? (" -cat " + txtCategoria.Text.Trim()) : "";
             cmd += !string.IsNullOrEmpty(txtCuenta.Text) ? (" -cta " + txtCuenta.Text.Trim()) : "";
             cmd += !string.IsNullOrEmpty(txtUserId.Text) ? (" -uid " + txtUserId.Text.Trim()) : "";
             cmd += !string.IsNullOrEmpty(txtPwd.Text) ? (" -pwd " + txtPwd.Text.Trim()) : "";

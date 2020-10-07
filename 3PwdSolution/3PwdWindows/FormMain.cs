@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -27,12 +28,7 @@ namespace _3PwdWindows
 
         #endregion
 
-        public FormMain()
-        {
-            InitializeComponent();
-            Init3Password();
-            LoadPwds();
-        }
+        # region Metodos
 
         private void Init3Password()
         {
@@ -115,39 +111,18 @@ namespace _3PwdWindows
             lbxCuentas.Focus();
         }
 
-        private void lbxCuentas_SelectedIndexChanged(object sender, EventArgs e)
+        #endregion
+
+        #region Metodos Windows 
+
+        public FormMain()
         {
-            lblCuenta.Text = (lbxCuentas.SelectedItem as RegistroPwd).Producto;
-            txtId.Text = (lbxCuentas.SelectedItem as RegistroPwd).UserId;
-            txtPwd.Text = "**********";
+            InitializeComponent();
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
+        private void FormMain_Load(object sender, EventArgs e)
         {
-            txtId.Enabled = true;
-            txtId.ReadOnly = false;
-            txtPwd.Enabled = true;
-            txtPwd.ReadOnly = false;
-            lbxCuentas.Enabled = false;
-
-            btnNew.Visible = false;
-            btnEdit.Visible = false;
-            btnDelete.Visible = true;
-            btnCancel.Visible = true;
-            btnSave.Visible = true;
-
-            txtId.Focus();
-        }
-
-        private void btnShowPwd_Click(object sender, EventArgs e)
-        {
-            txtPwd.Text = (lbxCuentas.SelectedItem as RegistroPwd).UserPwd;
-        }
-
-        private void btnNew_Click(object sender, EventArgs e)
-        {
-            var frm = new FormNew();
-            frm.ShowDialog();
+            Init3Password();
             LoadPwds();
         }
 
@@ -164,8 +139,105 @@ namespace _3PwdWindows
             btnDelete.Visible = false;
             btnCancel.Visible = false;
             btnSave.Visible = false;
+            lblEdit.Visible = false;
+            pnlInfo.BackColor = Color.White;
 
             lbxCuentas.Focus();
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show($"Desea borrar registro {lblCuenta.Text}?", "CONFIRMACION", MessageBoxButtons.YesNo);
+            if (result == DialogResult.No)
+                return;
+
+            var cmd = "del";
+
+            cmd += lbxCuentas.SelectedValue != null ? (" -cta " + (lbxCuentas.SelectedValue as string).Trim()) : "";
+            var respuesta = PC.Run(cmd);
+
+            if (respuesta[0].IsSymbol() && respuesta[0] != G.SeparadorCSV[0]
+                    && !(respuesta == "*** Registro borrado! ***"))
+            {
+                MessageBox.Show(respuesta, "Error", MessageBoxButtons.OK);
+                return;
+            }
+
+            MessageBox.Show(respuesta, "OK", MessageBoxButtons.OK);
+            LoadPwds();
+            btnCancel_Click(btnSave, null);
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            txtId.Enabled = true;
+            txtId.ReadOnly = false;
+            txtPwd.Enabled = true;
+            txtPwd.ReadOnly = false;
+            lbxCuentas.Enabled = false;
+
+            btnNew.Visible = false;
+            btnEdit.Visible = false;
+            btnDelete.Visible = true;
+            btnCancel.Visible = true;
+            btnSave.Visible = true;
+            lblEdit.Visible = true;
+            pnlInfo.BackColor = Color.LightSteelBlue;
+
+            txtId.Focus();
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            var frm = new FormNew();
+            frm.ShowDialog();
+            LoadPwds();
+        }
+
+        private void btnShowPwd_Click(object sender, EventArgs e)
+        {
+            txtPwd.Text = (lbxCuentas.SelectedItem as RegistroPwd).UserPwd;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtId.Text) || string.IsNullOrEmpty(txtPwd.Text))
+            {
+                var result = MessageBox.Show("Usuario o Password en blanco!\nDesea salvar así esta cuenta?", "", MessageBoxButtons.YesNo);
+                if (result == DialogResult.No)
+                    return;
+            }
+
+            var cmd = "upd";
+
+            var regPwd = lbxCuentas.SelectedItem as RegistroPwd;
+
+            cmd += regPwd != null ? (" -nom " + regPwd.UserNombre.Trim()) : "";
+            cmd += regPwd != null ? (" -cat " + regPwd.Categoria.Trim()) : "";
+            cmd += regPwd != null ? (" -emp " + regPwd.Empresa.Trim()) : "";
+            cmd += regPwd != null ? (" -cta " + regPwd.Producto.Trim()) : "";
+            cmd += regPwd != null ? (" -nro " + regPwd.Numero.Trim()) : "";
+            cmd += !string.IsNullOrEmpty(txtId.Text) ? (" -uid " + txtId.Text.Trim()) : "";
+            cmd += !string.IsNullOrEmpty(txtPwd.Text) ? (" -pwd " + txtPwd.Text.Trim()) : "";
+            var respuesta = PC.Run(cmd);
+
+            if (respuesta[0].IsSymbol() && respuesta[0] != G.SeparadorCSV[0])
+            {
+                MessageBox.Show(respuesta, "Error", MessageBoxButtons.OK);
+                return;
+            }
+
+            LoadPwds();
+            btnCancel_Click(btnSave, null);
+        }
+
+        private void lbxCuentas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            lblCuenta.Text = (lbxCuentas.SelectedItem as RegistroPwd).Producto;
+            txtId.Text = (lbxCuentas.SelectedItem as RegistroPwd).UserId;
+            txtPwd.Text = "**********";
+        }
+
+        #endregion
     }
 }
