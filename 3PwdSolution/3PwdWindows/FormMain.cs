@@ -189,9 +189,12 @@ namespace _3PwdWindows
 
         private void btnNew_Click(object sender, EventArgs e)
         {
+            int idx = lbxCuentas.SelectedIndex;
+            lbxCuentas.SelectedIndex = -1;
             var frm = new FormNew();
             frm.ShowDialog();
             LoadPwds();
+            lbxCuentas.SelectedIndex = idx;
         }
 
         private void btnShowPwd_Click(object sender, EventArgs e)
@@ -233,6 +236,9 @@ namespace _3PwdWindows
 
         private void lbxCuentas_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (lbxCuentas.SelectedIndex < 0)
+                return;
+
             lblCuenta.Text = (lbxCuentas.SelectedItem as RegistroPwd).Producto;
             txtId.Text = (lbxCuentas.SelectedItem as RegistroPwd).UserId;
             txtPwd.Text = "**********";

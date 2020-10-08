@@ -17,6 +17,8 @@ namespace _3PwdWindows
 {
     public partial class FormNew : Form
     {
+        #region Metodos Windows
+        
         public FormNew()
         {
             InitializeComponent();
@@ -55,5 +57,7 @@ namespace _3PwdWindows
             
             Close();
         }
+
+        #endregion
     }
 }

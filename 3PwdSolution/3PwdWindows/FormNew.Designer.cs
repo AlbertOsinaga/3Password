@@ -41,7 +41,8 @@ namespace _3PwdWindows
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(179, 121);
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnCancel.Location = new System.Drawing.Point(213, 165);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(84, 27);
             this.btnCancel.TabIndex = 0;
@@ -51,7 +52,8 @@ namespace _3PwdWindows
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(269, 121);
+            this.btnSave.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnSave.Location = new System.Drawing.Point(303, 165);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(84, 27);
             this.btnSave.TabIndex = 1;
@@ -62,57 +64,66 @@ namespace _3PwdWindows
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(77, 30);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(89, 30);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 15);
+            this.label2.Size = new System.Drawing.Size(58, 20);
             this.label2.TabIndex = 3;
             this.label2.Text = "Cuenta:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(54, 57);
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(58, 72);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 15);
+            this.label3.Size = new System.Drawing.Size(89, 20);
             this.label3.TabIndex = 4;
             this.label3.Text = "Usuario (Id):";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(25, 85);
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(24, 115);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(100, 15);
+            this.label4.Size = new System.Drawing.Size(123, 20);
             this.label4.TabIndex = 5;
             this.label4.Text = "Password (Clave):";
             // 
             // txtCuenta
             // 
-            this.txtCuenta.Location = new System.Drawing.Point(136, 27);
+            this.txtCuenta.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.txtCuenta.Location = new System.Drawing.Point(153, 27);
             this.txtCuenta.Name = "txtCuenta";
-            this.txtCuenta.Size = new System.Drawing.Size(217, 23);
+            this.txtCuenta.Size = new System.Drawing.Size(234, 27);
             this.txtCuenta.TabIndex = 7;
             // 
             // txtUserId
             // 
-            this.txtUserId.Location = new System.Drawing.Point(136, 54);
+            this.txtUserId.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.txtUserId.Location = new System.Drawing.Point(153, 69);
             this.txtUserId.Name = "txtUserId";
-            this.txtUserId.Size = new System.Drawing.Size(217, 23);
+            this.txtUserId.Size = new System.Drawing.Size(234, 27);
             this.txtUserId.TabIndex = 8;
             // 
             // txtPwd
             // 
-            this.txtPwd.Location = new System.Drawing.Point(136, 82);
+            this.txtPwd.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.txtPwd.Location = new System.Drawing.Point(153, 112);
             this.txtPwd.Name = "txtPwd";
-            this.txtPwd.Size = new System.Drawing.Size(217, 23);
+            this.txtPwd.Size = new System.Drawing.Size(234, 27);
             this.txtPwd.TabIndex = 9;
             // 
             // FormNew
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(387, 169);
+            this.BackColor = System.Drawing.Color.SteelBlue;
+            this.ClientSize = new System.Drawing.Size(414, 218);
             this.ControlBox = false;
             this.Controls.Add(this.txtPwd);
             this.Controls.Add(this.txtUserId);

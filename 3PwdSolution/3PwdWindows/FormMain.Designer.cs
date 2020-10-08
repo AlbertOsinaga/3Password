@@ -64,9 +64,9 @@ namespace _3PwdWindows
             // 
             // lbxCuentas
             // 
-            this.lbxCuentas.BackColor = System.Drawing.Color.LightSlateGray;
+            this.lbxCuentas.BackColor = System.Drawing.Color.SteelBlue;
             this.lbxCuentas.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lbxCuentas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.lbxCuentas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lbxCuentas.ForeColor = System.Drawing.Color.White;
             this.lbxCuentas.FormattingEnabled = true;
             this.lbxCuentas.ItemHeight = 20;
@@ -87,7 +87,7 @@ namespace _3PwdWindows
             // 
             // pnlInfo
             // 
-            this.pnlInfo.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.pnlInfo.BackColor = System.Drawing.Color.White;
             this.pnlInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlInfo.Controls.Add(this.lblEdit);
             this.pnlInfo.Controls.Add(this.btnCopy);
