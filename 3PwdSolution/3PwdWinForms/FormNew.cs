@@ -31,7 +31,6 @@ namespace _3PwdWinForms
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            
             if (string.IsNullOrEmpty(txtCuenta.Text))
             {
                 var Ok = MessageBox.Show("Cuenta no puede ser blanco", "", MessageBoxButtons.OK);
@@ -48,6 +47,8 @@ namespace _3PwdWinForms
             cmd += !string.IsNullOrEmpty(txtCuenta.Text) ? (" -cta " + txtCuenta.Text.Trim()) : "";
             cmd += !string.IsNullOrEmpty(txtUserId.Text) ? (" -uid " + txtUserId.Text.Trim()) : "";
             cmd += !string.IsNullOrEmpty(txtPwd.Text) ? (" -pwd " + txtPwd.Text.Trim()) : "";
+            cmd += !string.IsNullOrEmpty(txtWeb.Text) ? (" -web " + txtWeb.Text.Trim()) : "";
+            cmd += !string.IsNullOrEmpty(txtNotas.Text) ? (" -not " + txtNotas.Text.Trim()) : "";
             var respuesta = PC.Run(cmd);
             
             if(respuesta[0].IsSymbol() && respuesta[0] != G.SeparadorCSV[0])

@@ -134,6 +134,10 @@ namespace _3PwdWinForms
             txtId.ReadOnly = true;
             txtPwd.Enabled = false;
             txtPwd.ReadOnly = true;
+            txtWeb.Enabled = false;
+            txtWeb.ReadOnly = true;
+            txtNotas.Enabled = false;
+            txtNotas.ReadOnly = true;
             lbxCuentas.Enabled = true;
 
             btnNew.Visible = true;
@@ -187,6 +191,10 @@ namespace _3PwdWinForms
             txtId.ReadOnly = false;
             txtPwd.Enabled = true;
             txtPwd.ReadOnly = false;
+            txtWeb.Enabled = true;
+            txtWeb.ReadOnly = false;
+            txtNotas.Enabled = true;
+            txtNotas.ReadOnly = false;
             lbxCuentas.Enabled = false;
 
             btnNew.Visible = false;
@@ -252,6 +260,8 @@ namespace _3PwdWinForms
             cmd += regPwd != null ? (" -nro " + regPwd.Numero.Trim()) : "";
             cmd += !string.IsNullOrEmpty(txtId.Text) ? (" -uid " + txtId.Text.Trim()) : "";
             cmd += !string.IsNullOrEmpty(txtPwd.Text) ? (" -pwd " + txtPwd.Text.Trim()) : "";
+            cmd += !string.IsNullOrEmpty(txtWeb.Text) ? (" -web " + txtWeb.Text.Trim()) : "";
+            cmd += !string.IsNullOrEmpty(txtNotas.Text) ? (" -not " + txtNotas.Text.Trim()) : "";
             var respuesta = PC.Run(cmd);
 
             if (respuesta[0].IsSymbol() && respuesta[0] != G.SeparadorCSV[0])
@@ -270,9 +280,12 @@ namespace _3PwdWinForms
             if (lbxCuentas.SelectedIndex < 0)
                 return;
 
-            lblCuenta.Text = (lbxCuentas.SelectedItem as RegistroPwd).Producto;
-            txtId.Text = (lbxCuentas.SelectedItem as RegistroPwd).UserId;
+            var regPwd = lbxCuentas.SelectedItem as RegistroPwd;
+            lblCuenta.Text = regPwd.Producto;
+            txtId.Text = regPwd.UserId;
             txtPwd.Text = "****************";
+            txtWeb.Text = regPwd.Web;
+            txtNotas.Text = regPwd.UserNota;
             btnShowPwd.Text = "<o>";
         }
 

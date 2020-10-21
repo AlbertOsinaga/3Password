@@ -34,6 +34,11 @@ namespace _3PwdWinForms
             this.lbxCuentas = new System.Windows.Forms.ListBox();
             this.lblMensaje = new System.Windows.Forms.Label();
             this.pnlInfo = new System.Windows.Forms.Panel();
+            this.txtNotas = new System.Windows.Forms.TextBox();
+            this.txtWeb = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lblEdit = new System.Windows.Forms.Label();
             this.btnCopy = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
@@ -73,14 +78,14 @@ namespace _3PwdWinForms
             this.lbxCuentas.ItemHeight = 20;
             this.lbxCuentas.Location = new System.Drawing.Point(12, 51);
             this.lbxCuentas.Name = "lbxCuentas";
-            this.lbxCuentas.Size = new System.Drawing.Size(148, 340);
+            this.lbxCuentas.Size = new System.Drawing.Size(144, 380);
             this.lbxCuentas.TabIndex = 1;
             this.lbxCuentas.SelectedIndexChanged += new System.EventHandler(this.lbxCuentas_SelectedIndexChanged);
             // 
             // lblMensaje
             // 
             this.lblMensaje.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblMensaje.Location = new System.Drawing.Point(12, 395);
+            this.lblMensaje.Location = new System.Drawing.Point(12, 444);
             this.lblMensaje.Name = "lblMensaje";
             this.lblMensaje.Size = new System.Drawing.Size(521, 19);
             this.lblMensaje.TabIndex = 3;
@@ -90,6 +95,11 @@ namespace _3PwdWinForms
             // 
             this.pnlInfo.BackColor = System.Drawing.Color.WhiteSmoke;
             this.pnlInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlInfo.Controls.Add(this.txtNotas);
+            this.pnlInfo.Controls.Add(this.txtWeb);
+            this.pnlInfo.Controls.Add(this.label5);
+            this.pnlInfo.Controls.Add(this.label2);
+            this.pnlInfo.Controls.Add(this.groupBox1);
             this.pnlInfo.Controls.Add(this.lblEdit);
             this.pnlInfo.Controls.Add(this.btnCopy);
             this.pnlInfo.Controls.Add(this.btnNew);
@@ -105,8 +115,57 @@ namespace _3PwdWinForms
             this.pnlInfo.Controls.Add(this.lblCuenta);
             this.pnlInfo.Location = new System.Drawing.Point(157, 27);
             this.pnlInfo.Name = "pnlInfo";
-            this.pnlInfo.Size = new System.Drawing.Size(504, 364);
+            this.pnlInfo.Size = new System.Drawing.Size(504, 403);
             this.pnlInfo.TabIndex = 4;
+            // 
+            // txtNotas
+            // 
+            this.txtNotas.Enabled = false;
+            this.txtNotas.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtNotas.Location = new System.Drawing.Point(150, 256);
+            this.txtNotas.Multiline = true;
+            this.txtNotas.Name = "txtNotas";
+            this.txtNotas.Size = new System.Drawing.Size(302, 72);
+            this.txtNotas.TabIndex = 24;
+            // 
+            // txtWeb
+            // 
+            this.txtWeb.Enabled = false;
+            this.txtWeb.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtWeb.Location = new System.Drawing.Point(150, 223);
+            this.txtWeb.Name = "txtWeb";
+            this.txtWeb.Size = new System.Drawing.Size(302, 27);
+            this.txtWeb.TabIndex = 23;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label5.Location = new System.Drawing.Point(93, 256);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(51, 20);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Notas:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(54, 226);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(90, 20);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Página Web:";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.Black;
+            this.groupBox1.Location = new System.Drawing.Point(25, 197);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(461, 4);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox1";
             // 
             // lblEdit
             // 
@@ -164,7 +223,7 @@ namespace _3PwdWinForms
             // 
             this.btnSave.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btnSave.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnSave.Location = new System.Drawing.Point(411, 320);
+            this.btnSave.Location = new System.Drawing.Point(411, 350);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 30);
             this.btnSave.TabIndex = 8;
@@ -177,7 +236,7 @@ namespace _3PwdWinForms
             // 
             this.btnCancel.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnCancel.Location = new System.Drawing.Point(330, 320);
+            this.btnCancel.Location = new System.Drawing.Point(330, 350);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 30);
             this.btnCancel.TabIndex = 7;
@@ -190,7 +249,7 @@ namespace _3PwdWinForms
             // 
             this.btnDelete.BackColor = System.Drawing.Color.WhiteSmoke;
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnDelete.Location = new System.Drawing.Point(21, 320);
+            this.btnDelete.Location = new System.Drawing.Point(18, 350);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 30);
             this.btnDelete.TabIndex = 6;
@@ -220,7 +279,7 @@ namespace _3PwdWinForms
             this.txtPwd.Location = new System.Drawing.Point(150, 139);
             this.txtPwd.Name = "txtPwd";
             this.txtPwd.Size = new System.Drawing.Size(239, 27);
-            this.txtPwd.TabIndex = 4;
+            this.txtPwd.TabIndex = 22;
             // 
             // label4
             // 
@@ -239,13 +298,13 @@ namespace _3PwdWinForms
             this.txtId.Location = new System.Drawing.Point(150, 106);
             this.txtId.Name = "txtId";
             this.txtId.Size = new System.Drawing.Size(239, 27);
-            this.txtId.TabIndex = 2;
+            this.txtId.TabIndex = 21;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label3.Location = new System.Drawing.Point(21, 109);
+            this.label3.Location = new System.Drawing.Point(55, 109);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(89, 20);
             this.label3.TabIndex = 1;
@@ -270,7 +329,7 @@ namespace _3PwdWinForms
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(672, 423);
+            this.ClientSize = new System.Drawing.Size(672, 462);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pnlInfo);
             this.Controls.Add(this.lblMensaje);
@@ -305,5 +364,10 @@ namespace _3PwdWinForms
         private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.Button btnCopy;
         private System.Windows.Forms.Label lblEdit;
+        private System.Windows.Forms.TextBox txtNotas;
+        private System.Windows.Forms.TextBox txtWeb;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.GroupBox groupBox1;
     }
 }
