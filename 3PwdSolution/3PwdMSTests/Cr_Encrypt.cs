@@ -1,6 +1,7 @@
 ﻿#region Header
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 using _3PwdLibrary;
 using Cr = _3PwdLibrary.Cryptador;
@@ -124,6 +125,27 @@ namespace _3PwdMSTests
             // Prueba
             Assert.IsFalse(resultEncrypt.hayError);
             Assert.AreEqual("", resultEncrypt.mensajeError);
+            var resultDecrypt = Cr.Decrypt(resultEncrypt.encriptado, key, iv);
+            Assert.AreEqual(texto, resultDecrypt.texto);
+        }
+
+        [TestMethod]
+        public void Ok_MasterFile()
+        {
+            // Prepara
+            var masterFile = @"C:\Work\3Password\3PwdSolution\3PwdMSTests\_MasterFile";
+            var masterFileEncrypted = @"C:\Work\3Password\3PwdSolution\3PwdMSTests\_MasterFile.bin";
+            string texto = File.ReadAllText(masterFile);
+            byte[] key = (new AesManaged()).Key;
+            byte[] iv = (new AesManaged()).IV;
+
+            // Ejecuta
+            var resultEncrypt = Cr.Encrypt(texto, key, iv);
+
+            // Prueba
+            Assert.IsFalse(resultEncrypt.hayError);
+            Assert.AreEqual("", resultEncrypt.mensajeError);
+            File.WriteAllBytes(masterFileEncrypted, resultEncrypt.encriptado);
             var resultDecrypt = Cr.Decrypt(resultEncrypt.encriptado, key, iv);
             Assert.AreEqual(texto, resultDecrypt.texto);
         }

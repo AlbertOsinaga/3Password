@@ -61,7 +61,7 @@ namespace _3PwdLibrary
             {
                 regComando.Cmd = lineaCmd.Substring(0, i).Trim().ToLower();
                 if (i == 3 && lineaCmd.Length > 4)
-                    regComando.Arg = lineaCmd.Substring(i + 1);
+                    regComando.Arg = (lineaCmd.Substring(i + 1) + " ");
             }
             if (regComando.Cmd.Length != 3)
             {
@@ -139,10 +139,19 @@ namespace _3PwdLibrary
                 {
                     var partes = regComando.Arg.Split('-');
                     var campos = new Dictionary<string, string>();
+                    var key = "";
                     foreach (var campo in partes)
                     {
-                        if (campo.Length > 4 && cmds.Where(cmd => cmd == campo.Substring(0, 3)).Any() && campo[3] == ' ')
-                            campos[campo.Substring(0, 3)] = campo.Substring(4).Trim();
+                        if (campo.Length >= 4 && cmds.Where(cmd => cmd == campo.Substring(0, 3)).Any() && campo[3] == ' ')
+                        {
+                            key = campo.Substring(0, 3);
+                            campos[key] = campo.Substring(4).Trim();
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrWhiteSpace(campo))
+                                campos[key] += ( "-" + campo.Trim() );
+                        }
                     }
 
                     var arg = "";
@@ -155,6 +164,7 @@ namespace _3PwdLibrary
                     regComando.Arg = arg;
                 }
 
+                regComando.Arg = regComando.Arg.Trim();
                 regComando.Ok = true;
                 return;
             }

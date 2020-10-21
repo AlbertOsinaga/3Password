@@ -57,7 +57,7 @@ namespace _3PwdLibrary
             MR.DirMaestro = MR.DirMaestro_Default;
             MR.NameMaestro = MR.NameMaestro_Default;
             MR.PathMaestro = MR.DirMaestro + MR.NameMaestro;
-            MR.KeyMaestro = "@2PwdMasterFile";
+            MR.KeyMaestro = "@3PwdMasterFile";
             MR.KeyVacia = "|||||";
 
             MR.StatusWrited = "closed";
